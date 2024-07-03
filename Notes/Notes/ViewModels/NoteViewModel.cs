@@ -21,7 +21,7 @@ internal class NoteViewModel : ObservableObject, IQueryAttributable
         }
     }
 
-    public DateTime Date => _note.Date;
+    public DateTime Date => _note.Date ?? DateTime.MinValue;
     public string Identifier => _note.Filename;
 
     public ICommand SaveCommand { get; private set; }
