@@ -1,9 +1,12 @@
+using HaulageApp.ViewModels;
+
 namespace HaulageApp.Views;
 
 public partial class NotePage : ContentPage
 {
-    public NotePage()
+    public NotePage(NoteViewModel viewModel)
     {
+        this.BindingContext = viewModel;   
         InitializeComponent();
     }
 }
