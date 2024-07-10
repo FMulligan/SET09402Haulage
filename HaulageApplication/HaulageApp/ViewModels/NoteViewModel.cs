@@ -1,13 +1,13 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
+using HaulageApp.Services;
+using HaulageApp.Models;
 
 namespace HaulageApp.ViewModels;
 
-internal class NoteViewModel : ObservableObject, IQueryAttributable
+public partial class NoteViewModel : ObservableObject, IQueryAttributable
 {
-    private Models.HaulageApp _note;
-
     public string Text
     {
         get => _note.Text;
@@ -21,51 +21,49 @@ internal class NoteViewModel : ObservableObject, IQueryAttributable
         }
     }
 
-    public DateTime Date => _note.Date ?? DateTime.MinValue;
-    public string Identifier => _note.Filename;
-
-    public ICommand SaveCommand { get; private set; }
-    public ICommand DeleteCommand { get; private set; }
-
-    public NoteViewModel()
+    public DateTime Date => _note.Date;
+    public int Id => _note.Id;
+    
+    private Models.Note _note;
+    private INoteService _noteService;
+    public NoteViewModel(INoteService noteService)
     {
-        _note = new Models.HaulageApp();
-        SaveCommand = new AsyncRelayCommand(Save);
-        DeleteCommand = new AsyncRelayCommand(Delete);
+        _noteService = noteService;
+        _note = new Models.Note();
     }
-
-    public NoteViewModel(Models.HaulageApp note)
+    public NoteViewModel(INoteService noteService, Note note)
     {
         _note = note;
-        SaveCommand = new AsyncRelayCommand(Save);
-        DeleteCommand = new AsyncRelayCommand(Delete);
+        _noteService = noteService;
     }
 
+    [RelayCommand]
     private async Task Save()
     {
         _note.Date = DateTime.Now;
-        _note.Save();
-        await Shell.Current.GoToAsync($"..?saved={_note.Filename}");
+        _noteService.SaveItem(_note);
+        await Shell.Current.GoToAsync($"..?saved={_note.Id}");
     }
 
+    [RelayCommand]
     private async Task Delete()
     {
-        _note.Delete();
-        await Shell.Current.GoToAsync($"..?deleted={_note.Filename}");
+        _noteService.DeleteItem(_note);
+        await Shell.Current.GoToAsync($"..?deleted={_note.Id}");
     }
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.ContainsKey("load"))
         {
-            _note = Models.HaulageApp.Load(query["load"].ToString());
+            _note = _noteService.GetItem(int.Parse(query["load"].ToString()));
             RefreshProperties();
         }
     }
 
     public void Reload()
     {
-        _note = Models.HaulageApp.Load(_note.Filename);
+        _note = _noteService.GetItem(_note.Id);
         RefreshProperties();
     }
 

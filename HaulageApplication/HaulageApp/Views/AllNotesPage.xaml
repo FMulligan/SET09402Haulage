@@ -4,9 +4,6 @@
              x:Class="HaulageApp.Views.AllNotesPage"
              Title="Your HaulageApp"
              NavigatedTo="ContentPage_NavigatedTo">
-    <ContentPage.BindingContext>
-        <viewModels:NotesViewModel />
-    </ContentPage.BindingContext>
 
     <!-- Add an item to the toolbar -->
     <ContentPage.ToolbarItems>
