@@ -3,7 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using HaulageApp.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using HaulageApp.Services;
+using HaulageApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp.ViewModels;
 
@@ -12,16 +13,14 @@ public class AllNotesViewModel : IQueryAttributable
     public ObservableCollection<ViewModels.NoteViewModel> AllNotes { get; }
     public ICommand NewCommand { get; }
     public ICommand SelectNoteCommand { get; }
-
-    private INoteService _noteService;
-
-    public AllNotesViewModel(INoteService noteService)
+    
+    private HaulageDbContext _context;
+    public AllNotesViewModel(HaulageDbContext notesContext)
     {
-        _noteService = noteService;
-        AllNotes = new ObservableCollection<NoteViewModel>(
-            _noteService.GetItems().Select(n => new NoteViewModel(_noteService, n)));
+        _context = notesContext;
+        AllNotes = new ObservableCollection<NoteViewModel>(_context.Notes.ToList().Select(n => new NoteViewModel(_context, n)));
         NewCommand = new AsyncRelayCommand(NewNoteAsync);
-        SelectNoteCommand = new AsyncRelayCommand<NoteViewModel>(SelectNoteAsync);
+        SelectNoteCommand = new AsyncRelayCommand(SelectNoteAsync);
     }
 
     private async Task NewNoteAsync()
@@ -59,7 +58,7 @@ public class AllNotesViewModel : IQueryAttributable
             }
             // If note isn't found, it's new; add it.
             else
-                AllNotes.Insert(0, new NoteViewModel(_noteService, _noteService.GetItem(int.Parse(noteId))));
+                AllNotes.Insert(0, new NoteViewModel(_context, _context.Notes.Single(n => n.Id == int.Parse(noteId))));
         }
     }
 }

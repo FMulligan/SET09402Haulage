@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Reflection;
 using HaulageApp.Data;
-using HaulageApp.Services;
 using HaulageApp.ViewModels;
 using HaulageApp.Views;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp;
 
@@ -28,9 +28,10 @@ public static class MauiProgram
             .Build();
 
         builder.Configuration.AddConfiguration(config);
-        builder.Services.AddSingleton<HaulageDbContext>();
-        builder.Services.AddSingleton<INoteService, NoteService>();
-
+        
+        var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
+        builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
+        
         builder.Services.AddSingleton<AllNotesViewModel>();
         builder.Services.AddTransient<NoteViewModel>();
 
