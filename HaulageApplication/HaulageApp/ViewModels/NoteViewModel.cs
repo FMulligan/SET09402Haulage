@@ -1,8 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Input;
-using HaulageApp.Services;
 using HaulageApp.Models;
+using HaulageApp.Data;
 
 namespace HaulageApp.ViewModels;
 
@@ -24,31 +23,36 @@ public partial class NoteViewModel : ObservableObject, IQueryAttributable
     public DateTime Date => _note.Date;
     public int Id => _note.Id;
     
-    private Models.Note _note;
-    private INoteService _noteService;
-    public NoteViewModel(INoteService noteService)
+    private Note _note;
+    private HaulageDbContext _context;
+    public NoteViewModel(HaulageDbContext notesDbContext)
     {
-        _noteService = noteService;
-        _note = new Models.Note();
+        _context = notesDbContext;
+        _note = new Note();
     }
-    public NoteViewModel(INoteService noteService, Note note)
+    public NoteViewModel(HaulageDbContext notesDbContext, Note note)
     {
         _note = note;
-        _noteService = noteService;
+        _context = notesDbContext;
     }
 
     [RelayCommand]
     private async Task Save()
     {
         _note.Date = DateTime.Now;
-        _noteService.SaveItem(_note);
+        if (_note.Id == 0)
+        {
+            _context.Notes.Add(_note);
+        }
+        _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?saved={_note.Id}");
     }
 
     [RelayCommand]
     private async Task Delete()
     {
-        _noteService.DeleteItem(_note);
+        _context.Remove(_note);
+        _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?deleted={_note.Id}");
     }
 
@@ -56,14 +60,14 @@ public partial class NoteViewModel : ObservableObject, IQueryAttributable
     {
         if (query.ContainsKey("load"))
         {
-            _note = _noteService.GetItem(int.Parse(query["load"].ToString()));
+            _note = _context.Notes.Single(n => n.Id == int.Parse(query["load"].ToString()));
             RefreshProperties();
         }
     }
 
     public void Reload()
     {
-        _note = _noteService.GetItem(_note.Id);
+        _context.Entry(_note).Reload();
         RefreshProperties();
     }
 
