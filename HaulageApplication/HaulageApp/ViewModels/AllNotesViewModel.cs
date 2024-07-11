@@ -1,15 +1,12 @@
-using System.Collections;
 using CommunityToolkit.Mvvm.Input;
-using HaulageApp.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HaulageApp.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp.ViewModels;
 
-public class AllNotesViewModel : IQueryAttributable
-{
+
+public class AllNotesViewModel : IQueryAttributable {
     public ObservableCollection<ViewModels.NoteViewModel> AllNotes { get; }
     public ICommand NewCommand { get; }
     public ICommand SelectNoteCommand { get; }
@@ -18,9 +15,8 @@ public class AllNotesViewModel : IQueryAttributable
     public AllNotesViewModel(HaulageDbContext notesContext)
     {
         _context = notesContext;
-        AllNotes = new ObservableCollection<NoteViewModel>(_context.Notes.ToList().Select(n => new NoteViewModel(_context, n)));
-        NewCommand = new AsyncRelayCommand(NewNoteAsync);
-        SelectNoteCommand = new AsyncRelayCommand(SelectNoteAsync);
+        AllNotes = new ObservableCollection<NoteViewModel>(_context.Notes.ToList().Select(n => new NoteViewModel(_context, n))); NewCommand = new AsyncRelayCommand(NewNoteAsync);
+        SelectNoteCommand = new AsyncRelayCommand<ViewModels.NoteViewModel>(SelectNoteAsync);
     }
 
     private async Task NewNoteAsync()
