@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 using HaulageApp.Data;
 using HaulageApp.ViewModels;
@@ -24,12 +25,15 @@ public static class MauiProgram
         using var stream = a.GetManifestResourceStream("HaulageApp.appsettings.json");
 
         var config = new ConfigurationBuilder()
-            .AddJsonStream(stream)
+            .AddJsonStream(stream!)
             .Build();
 
         builder.Configuration.AddConfiguration(config);
         
         var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
+        if (connectionString == null)
+            throw new ApplicationException("LocalConnection is not set");
+        
         builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
         
         builder.Services.AddSingleton<AllNotesViewModel>();
