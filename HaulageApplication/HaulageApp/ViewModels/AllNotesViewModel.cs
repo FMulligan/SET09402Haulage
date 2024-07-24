@@ -20,7 +20,7 @@ public class AllNotesViewModel : IQueryAttributable
         _context = notesContext;
         AllNotes = new ObservableCollection<NoteViewModel>(_context.Notes.ToList().Select(n => new NoteViewModel(_context, n)));
         NewCommand = new AsyncRelayCommand(NewNoteAsync);
-        SelectNoteCommand = new AsyncRelayCommand(SelectNoteAsync);
+        SelectNoteCommand = new AsyncRelayCommand<NoteViewModel>(SelectNoteAsync);
     }
 
     private async Task NewNoteAsync()
@@ -28,7 +28,7 @@ public class AllNotesViewModel : IQueryAttributable
         await Shell.Current.GoToAsync(nameof(Views.NotePage));
     }
 
-    private async Task SelectNoteAsync(ViewModels.NoteViewModel note)
+    private async Task SelectNoteAsync(ViewModels.NoteViewModel? note)
     {
         if (note != null)
             await Shell.Current.GoToAsync($"{nameof(Views.NotePage)}?load={note.Id}");
