@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using HaulageApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp.Data
 {
@@ -10,6 +11,6 @@ namespace HaulageApp.Data
         public HaulageDbContext(DbContextOptions options) : base(options)
         { }
 
-        public DbSet<Note> Notes { get; set; }
+        public DbSet<Note> note { get; set; }
     }
 }
