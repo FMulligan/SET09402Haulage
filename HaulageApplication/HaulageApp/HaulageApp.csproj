@@ -14,14 +14,14 @@
         <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
         <OutputType>Exe</OutputType>
-        <RootNamespace>Notes</RootNamespace>
+        <RootNamespace>HaulageApp</RootNamespace>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
         <!-- Display name -->
-        <ApplicationTitle>Notes</ApplicationTitle>
+        <ApplicationTitle>Haulage</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.notes</ApplicationId>
@@ -58,9 +58,14 @@
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.6.24327.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.6.24327.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-preview.6.24327.7" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
     </ItemGroup>
 
     <ItemGroup>
@@ -90,4 +95,10 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="appsettings.json" />
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

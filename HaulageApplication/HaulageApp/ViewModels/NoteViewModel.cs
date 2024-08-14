@@ -1,12 +1,32 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Input;
+using HaulageApp.Models;
+using HaulageApp.Data;
+using Microsoft.Extensions.Logging;
 
 namespace HaulageApp.ViewModels;
 
-internal class NoteViewModel : ObservableObject, IQueryAttributable
+public partial class NoteViewModel : ObservableObject, IQueryAttributable
 {
-    private Models.HaulageApp _note;
+    private readonly HaulageDbContext _context;
+    private Note _note;
+    private readonly ILogger<NoteViewModel> _logger;
+
+    public NoteViewModel(HaulageDbContext notesDbContext, ILogger<NoteViewModel> logger)
+     { 
+         _context = notesDbContext;
+         _note = new Note();
+         _logger = logger;
+         _logger.LogInformation("NoteViewModel instantiated without a note.");
+     }
+
+    public NoteViewModel(HaulageDbContext notesDbContext, Note note, ILogger<NoteViewModel> logger)
+    {
+        _note = note;
+        _context = notesDbContext;
+        _logger = logger;
+        _logger.LogInformation("NoteViewModel instantiated with a note ID: {NoteId}", _note.Id);
+    }
 
     public string Text
     {
@@ -17,61 +37,58 @@ internal class NoteViewModel : ObservableObject, IQueryAttributable
             {
                 _note.Text = value;
                 OnPropertyChanged();
+                _logger.LogDebug("Note text changed to: {Text}", _note.Text);
             }
         }
     }
 
-    public DateTime Date => _note.Date ?? DateTime.MinValue;
-    public string Identifier => _note.Filename;
+    public DateTime Date => _note.Date;
+    public int Id => _note.Id;
 
-    public ICommand SaveCommand { get; private set; }
-    public ICommand DeleteCommand { get; private set; }
-
-    public NoteViewModel()
-    {
-        _note = new Models.HaulageApp();
-        SaveCommand = new AsyncRelayCommand(Save);
-        DeleteCommand = new AsyncRelayCommand(Delete);
-    }
-
-    public NoteViewModel(Models.HaulageApp note)
-    {
-        _note = note;
-        SaveCommand = new AsyncRelayCommand(Save);
-        DeleteCommand = new AsyncRelayCommand(Delete);
-    }
-
+    [RelayCommand]
     private async Task Save()
     {
         _note.Date = DateTime.Now;
-        _note.Save();
-        await Shell.Current.GoToAsync($"..?saved={_note.Filename}");
+        if (_note.Id == 0)
+        {
+            _context.note.Add(_note);
+            _logger.LogInformation("Adding a new note with date: {Date}", _note.Date);
+        }
+        _context.SaveChanges();
+        _logger.LogInformation("Note saved with ID: {NoteId}", _note.Id);
+        await Shell.Current.GoToAsync($"..?saved={_note.Id}");
     }
 
+    [RelayCommand]
     private async Task Delete()
     {
-        _note.Delete();
-        await Shell.Current.GoToAsync($"..?deleted={_note.Filename}");
+        _context.Remove(_note);
+        _context.SaveChanges();
+        _logger.LogInformation("Note deleted with ID: {NoteId}", _note.Id);
+        await Shell.Current.GoToAsync($"..?deleted={_note.Id}");
     }
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.ContainsKey("load"))
-        {
-            _note = Models.HaulageApp.Load(query["load"].ToString());
+        { 
+            int noteId = int.Parse(query["load"].ToString());
+            _note = _context.note.Single(n => n.Id == noteId);
             RefreshProperties();
+            _logger.LogInformation("Loaded note with ID: {NoteId}", _note.Id);
         }
     }
-
     public void Reload()
     {
-        _note = Models.HaulageApp.Load(_note.Filename);
+        _context.Entry(_note).Reload();
         RefreshProperties();
+        _logger.LogInformation("Note reloaded with ID: {NoteId}", _note.Id);
     }
 
     private void RefreshProperties()
     {
         OnPropertyChanged(nameof(Text));
         OnPropertyChanged(nameof(Date));
+        _logger.LogDebug("Properties refreshed for note ID: {NoteId}", _note.Id);
     }
 }
