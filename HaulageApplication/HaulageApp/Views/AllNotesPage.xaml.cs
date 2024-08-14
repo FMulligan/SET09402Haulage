@@ -6,7 +6,7 @@ public partial class AllNotesPage : ContentPage
 {
     public AllNotesPage(AllNotesViewModel viewModel)
     {
-        this.BindingContext = viewModel;   
+        BindingContext = viewModel;   
         InitializeComponent();
     }
     
