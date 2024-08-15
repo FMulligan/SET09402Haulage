@@ -1,0 +1,47 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HaulageApp.Views.TripPage"
+             Title="Manage Trips">
+
+    <ScrollView>
+        <StackLayout Padding="10">
+            <Label Text="All Trips" FontAttributes="Bold" FontSize="Medium" Margin="10,20,0,0" />
+
+            <CollectionView ItemsSource="{Binding TripGroups}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" BackgroundColor="#f0f0f0" Margin="0,0,0,10">
+                            <Label Text="{Binding TripId, StringFormat='Trip Number: {0}'}" FontAttributes="Bold" FontSize="Medium" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding Status, StringFormat='Trip Status: {0}'}" FontSize="Medium" VerticalTextAlignment="Center" />
+
+                            <StackLayout>
+                                <Label Text="Start Time:" FontAttributes="Bold" />
+                                <Entry Text="{Binding StartTimeString, Mode=TwoWay}" IsEnabled="{Binding IsEditing}" Placeholder="YYYY-MM-DD HH:MM" />
+                            </StackLayout>
+
+                            <StackLayout>
+                                <Label Text="End Time:" FontAttributes="Bold" />
+                                <Entry Text="{Binding EndTimeString, Mode=TwoWay}" IsEnabled="{Binding IsEditing}" Placeholder="YYYY-MM-DD HH:MM" />
+                            </StackLayout>
+
+                            <Label Text="Stops:" FontAttributes="Bold" FontSize="Medium" Margin="10,10,0,0"/>
+                            <CollectionView ItemsSource="{Binding Waypoints}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Padding="5">
+                                            <Label Text="{Binding WaypointType}" FontAttributes="Bold" FontSize="Small" VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding Location}" FontSize="Small" VerticalTextAlignment="Center" />
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Edit/Save Button -->
+                            <Button Text="{Binding EditSaveButtonText}" Command="{Binding ToggleEditCommand}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
