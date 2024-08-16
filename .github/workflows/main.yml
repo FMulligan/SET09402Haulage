@@ -1,26 +1,35 @@
-name: Test actions for .NET MAUI App
+name: Build and run tests for .NET MAUI App
 
-on: push
+on: [push, pull_request]
 
 jobs:
   build:
     name: Basic actions
-    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        version: [ 8.0.x ]
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Test actions
-      run: |
-        echo "Testing actions so we can use for testing later"
+    - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
     - name: Install MAUI workload
       run: dotnet workload install maui
-#    - name: Build
-#      run: dotnet publish HaulageApplication/HaulageApp/HaulageApp.csproj -c Release -f:net8.0-windows10.0.19041.0 /p:GenerateAppxPackageOnBuild=true /p:AppxPackageSigningEnabled=false
-#    - name: Upload Build Artifacts
-#      uses: actions/upload-artifact@v3.1.0
-#      with:
-#        path: .\**\AppPackages\**\*.*
+    - name: Install dependencies
+      run: dotnet restore HaulageApplication
+    - name: Build
+      run: dotnet build HaulageApplication
+    - name: Test with the dotnet CLI
+      run: dotnet test HaulageApplication --logger trx --results-directory "test-results-${{ matrix.os }}-${{ matrix.version }}"
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.os }}-${{ matrix.version }}
+        path: test-results-${{ matrix.os }}-${{ matrix.version }}
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
