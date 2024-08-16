@@ -1,4 +1,6 @@
-﻿namespace HaulageApp;
+﻿using HaulageApp.Views;
+
+namespace HaulageApp;
 
 public partial class AppShell : Shell
 {
@@ -6,7 +8,8 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        Routing.RegisterRoute(nameof(Views.NotePage), typeof(Views.NotePage));
-
+        Routing.RegisterRoute("home", typeof(AllNotesPage));
+        Routing.RegisterRoute("login", typeof(LoginPage));
+        Routing.RegisterRoute(nameof(NotePage), typeof(NotePage));
     }
 }

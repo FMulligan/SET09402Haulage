@@ -5,6 +5,7 @@ using HaulageApp.ViewModels;
 using HaulageApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using CommunityToolkit.Maui;
 
 namespace HaulageApp;
 
@@ -15,6 +16,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -38,7 +40,10 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<AllNotesViewModel>();
         builder.Services.AddTransient<NoteViewModel>();
-
+        
+        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddTransient<LoginPage>();
+        
         builder.Services.AddSingleton<AllNotesPage>();
         builder.Services.AddTransient<NotePage>();
 

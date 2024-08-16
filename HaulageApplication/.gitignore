@@ -1,5 +1,6 @@
 .idea
-Notes/bin/
-Notes/obj/
 HaulageApp/bin
 HaulageApp/obj
+HaulageAppTests/bin
+HaulageAppTests/obj
+**.user
