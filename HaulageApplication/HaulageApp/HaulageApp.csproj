@@ -24,7 +24,7 @@
         <ApplicationTitle>Haulage</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.notes</ApplicationId>
+        <ApplicationId>com.companyname.haulage</ApplicationId>
 
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
