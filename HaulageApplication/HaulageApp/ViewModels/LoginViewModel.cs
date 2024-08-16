@@ -9,33 +9,48 @@ namespace HaulageApp.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly HaulageDbContext _context;
-    
+
     public LoginViewModel(HaulageDbContext dbContext)
-    { 
+    {
         _context = dbContext;
     }
-    
-    public string Email { get; set; }
-    public string Password { get; set; }
-    
+
+    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
+
     [RelayCommand]
     private async Task Login()
     {
-        if (IsCredentialCorrect(Email, Password))
+        var isCredentialCorrect = false;
+        var connected = true;
+
+        try
         {
-            await Shell.Current.GoToAsync("///home");
+            isCredentialCorrect = IsCredentialCorrect(Email, Password);
         }
-        else
+        catch (Exception e)
         {
-            await Shell.Current.DisplayAlert("Login failed", "Username or password is incorrect", "Try again");
+            Console.WriteLine(e);
+            connected = false;
+            await Shell.Current.DisplayAlert("Login failed", "Ensure you are connected to the internet", "Try again");
+        }
+
+        switch (isCredentialCorrect)
+        {
+            case true:
+                await Shell.Current.GoToAsync("///home");
+                break;
+            case false when connected:
+                await Shell.Current.DisplayAlert("Login failed", "Username or password is incorrect", "Try again");
+                break;
         }
     }
-    
+
     public bool IsCredentialCorrect(string username, string password)
     {
-        User? user =  _context.user
-             .AsQueryable()
-             .FirstOrDefault(user => user.Email == username.ToLower() && user.Password == password);
+        User? user = _context.user
+            .AsQueryable()
+            .FirstOrDefault(user => user.Email == username.ToLower() && user.Password == password);
         return user != null;
     }
 }

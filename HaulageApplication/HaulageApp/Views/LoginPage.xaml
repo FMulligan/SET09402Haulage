@@ -40,7 +40,7 @@
                         <Frame CornerRadius="10" Padding="3" Margin="0,10,0,0">
                             <VerticalStackLayout>
 
-                                <Entry x:Name="Username" Text="{Binding Email}" Margin="5,0,0,0" Placeholder="Username" FontSize="18">
+                                <Entry x:Name="Email" Text="{Binding Email}" Margin="5,0,0,0" Placeholder="Email" FontSize="18">
                                 </Entry>
 
                             </VerticalStackLayout>
