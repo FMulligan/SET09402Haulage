@@ -30,5 +30,12 @@
                 ContentTemplate="{DataTemplate views:AboutPage}"
                 Route="about"/>
         </Tab>
+        
+        <Tab Title="Settings" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate views:SettingsPage}"
+                Route="settings"/>
+        </Tab>
     </TabBar>
 </Shell>
