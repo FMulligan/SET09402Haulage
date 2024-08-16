@@ -11,6 +11,7 @@ public partial class SettingsPage : ContentPage
     {
         if (await DisplayAlert("Are you sure?", "You will be logged out.", "Log out", "Cancel"))
         {
+            SecureStorage.Remove("hasAuth");
             await Shell.Current.GoToAsync("///login");
         }
     }

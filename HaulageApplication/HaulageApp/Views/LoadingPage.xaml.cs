@@ -24,8 +24,7 @@ public partial class LoadingPage : ContentPage
 
     async Task<bool> IsAuthenticated()
     {
-        // We would actually have a method to check authentication state.
-        // E.g. would provide a token or, even, can save in local storage
-        return false;
+        var hasAuth = await SecureStorage.GetAsync("hasAuth");
+        return hasAuth != null;
     }
 }
