@@ -6,6 +6,7 @@ using HaulageApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Maui;
+using HaulageApp.Common;
 
 namespace HaulageApp;
 
@@ -37,9 +38,14 @@ public static class MauiProgram
             throw new ApplicationException("LocalConnection is not set");
         
         builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
-        
+
+        builder.Services.AddSingleton<ISecureStorageWrapper>(implementationFactory => new SecureStorageWrapper());
+                    
         builder.Services.AddSingleton<AllNotesViewModel>();
         builder.Services.AddTransient<NoteViewModel>();
+        
+        builder.Services.AddSingleton<SettingsViewModel>();
+        builder.Services.AddTransient<SettingsPage>();
         
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddTransient<LoginPage>();

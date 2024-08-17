@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HaulageApp.Models;
 using HaulageApp.Data;
-using Microsoft.Extensions.Logging;
 
 namespace HaulageApp.ViewModels;
 

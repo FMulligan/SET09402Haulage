@@ -4,43 +4,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HaulageApp.Views.SettingsPage"
              Title="Settings">
-   <Grid RowDefinitions="2*,*" Margin="0,10,0,0">
+    <Grid RowDefinitions="2*,*" Margin="0,10,0,0">
         <VerticalStackLayout Padding="10" VerticalOptions="Center" HorizontalOptions="Center">
-            <Frame BorderColor="Gray"
-               CornerRadius="10"
-               HasShadow="True"
-               Margin="0,-20,0,0"
-               ZIndex="0"
-               Padding="8">
-                <Frame.Shadow>
-                    <Shadow Brush="Black"
-                Offset="20,20"
-                Radius="10"
-                Opacity="0.9" />
-                </Frame.Shadow>
                 <StackLayout Padding="10">
 
-                    <VerticalStackLayout Padding="10">
+                    <VerticalStackLayout>
+                        <Label Text="Email"
+                               FontAttributes="Bold"
+                               FontSize="10"/>
+                        <Label Text="{Binding Email}"
+                               FontSize="16"
+                               Padding="10"/>
+                    </VerticalStackLayout>
 
-                        <VerticalStackLayout Padding="0" Margin="0,5,0,0">
-                            <Label
-                                Text="Your are currently logged in."
-                                FontSize="16"
-                                />
-                            <BoxView Color="Black"
+                    <VerticalStackLayout>
+                        <Label Text="Password"
+                               FontAttributes="Bold"
+                               FontSize="10"
+                               Padding="0,10,0,10"/>
+                        <Button
+                            Text="Change password"
+                            FontSize="16"
+                            Padding="10"
+                            Command="{Binding ChangePasswordCommand}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout >
+
+                        <BoxView Color="Black"
                                  Margin="0,20,0,0"
                                  HeightRequest="2"
                                  HorizontalOptions="Fill" />
-                            <Button
-                                Margin="0,20,0,0"
-                                Text="Logout"
-                                x:Name="LogoutButton"
-                                Clicked="LogoutButton_Clicked"
-                                />
-                        </VerticalStackLayout>
+                        <Button
+                            Margin="0,20,0,0"
+                            Text="Logout"
+                            FontSize="16"
+                            x:Name="LogoutButton"
+                            Command="{Binding LogoutCommand}"
+                            Padding="10"/>
                     </VerticalStackLayout>
                 </StackLayout>
-            </Frame>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

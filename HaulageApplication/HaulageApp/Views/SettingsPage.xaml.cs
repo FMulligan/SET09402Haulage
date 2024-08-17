@@ -1,18 +1,12 @@
+using HaulageApp.ViewModels;
+
 namespace HaulageApp.Views;
 
 public partial class SettingsPage : ContentPage
 {
-    public SettingsPage()
+    public SettingsPage(SettingsViewModel viewModel)
     {
+        BindingContext = viewModel;
         InitializeComponent();
-    }
-    
-    private async void LogoutButton_Clicked(object sender, EventArgs e)
-    {
-        if (await DisplayAlert("Are you sure?", "You will be logged out.", "Log out", "Cancel"))
-        {
-            SecureStorage.Remove("hasAuth");
-            await Shell.Current.GoToAsync("///login");
-        }
     }
 }
