@@ -46,6 +46,11 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<AllNotesPage>();
         builder.Services.AddTransient<NotePage>();
+        
+        builder.Services.AddSingleton<AllVehiclesPage>();
+        builder.Services.AddTransient<VehiclePage>();
+        builder.Services.AddSingleton<AllVehiclesViewModel>();
+        builder.Services.AddTransient<VehicleViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
