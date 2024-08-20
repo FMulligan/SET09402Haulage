@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HaulageApp.Models;
 using HaulageApp.Data;
-using Microsoft.Extensions.Logging;
 
 namespace HaulageApp.ViewModels;
 
@@ -38,6 +37,7 @@ public partial class LoginViewModel : ObservableObject
         switch (isCredentialCorrect)
         {
             case true:
+                await SecureStorage.SetAsync("hasAuth", Email);
                 await Shell.Current.GoToAsync("///home");
                 break;
             case false when connected:
