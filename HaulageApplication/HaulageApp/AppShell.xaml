@@ -30,12 +30,18 @@
                 ContentTemplate="{DataTemplate views:AboutPage}"
                 Route="about"/>
         </Tab>
+      
+       <Tab Title="Vehicles" Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}">
+            <ShellContent
+                Title="Vehicle"
+                ContentTemplate="{DataTemplate views:AllVehiclesPage}"
+                Route="vehicles"/>
+        </Tab>
         
         <Tab Title="Settings" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
             <ShellContent
                 Title="Settings"
                 ContentTemplate="{DataTemplate views:SettingsPage}"
-                Route="settings"/>
-        </Tab>
+                Route="settings"/> 
     </TabBar>
 </Shell>
