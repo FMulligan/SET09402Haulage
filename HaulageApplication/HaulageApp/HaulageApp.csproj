@@ -85,6 +85,12 @@
       <MauiXaml Update="Views\LoadingPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="Views\VehiclePage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>  
+      <MauiXaml Update="Views\AllVehiclesPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>  
     </ItemGroup>
 
     <ItemGroup>
@@ -108,6 +114,14 @@
         <DependentUpon>LoadingPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\VehiclePage.xaml.cs">
+        <DependentUpon>VehiclePage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AllVehiclesPage.xaml.cs">
+        <DependentUpon>AllVehiclesPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>  
     </ItemGroup>
 
     <ItemGroup>
