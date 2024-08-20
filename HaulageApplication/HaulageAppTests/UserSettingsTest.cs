@@ -9,7 +9,7 @@ public class UserSettingsTest
     private FakeSecureStorageWrapper fakeStorage = new();
 
     [Fact]
-    public async void UserEmailReturnsWhenHasAuth()
+    public async void ReturnsUserEmailWhenAuthenticated()
     {
         var options = db.CreateContextOptions();
         db.CreateContext(options);
@@ -23,7 +23,7 @@ public class UserSettingsTest
     }
 
     [Fact]
-    public void ErrorMessageReturnsWhenNoAuth()
+    public void ReturnsErrorMessageWhenNotAuthenticated()
     {
         var options = db.CreateContextOptions();
         db.CreateContext(options);
@@ -36,7 +36,7 @@ public class UserSettingsTest
     }
 
     [Fact]
-    public void ReturnTrueOnValidPassword()
+    public void ReturnsTrueForValidPassword()
     {
         var options = db.CreateContextOptions();
         db.CreateContext(options);
@@ -49,7 +49,7 @@ public class UserSettingsTest
     }
     
     [Fact]
-    public void ReturnFalseOnInvalidPassword()
+    public void ReturnsFalseForInvalidPassword()
     {
         var options = db.CreateContextOptions();
         db.CreateContext(options);

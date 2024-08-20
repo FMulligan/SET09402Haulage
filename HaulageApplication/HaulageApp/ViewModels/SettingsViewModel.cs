@@ -39,7 +39,7 @@ public partial class SettingsViewModel : ObservableObject
     private async Task ChangePassword()
     {
         var newPassword = await Shell.Current.DisplayPromptAsync("Update Password", "Enter new password");
-        
+        // Result of "cancel" is null.
         if (newPassword == null)
         {
             return;
@@ -48,6 +48,11 @@ public partial class SettingsViewModel : ObservableObject
         while (!PasswordIsValid(newPassword))
         {
             newPassword = await Shell.Current.DisplayPromptAsync("Error", "Choose a valid password");
+            // Result of "cancel" is null.
+            if (newPassword == null)
+            {
+                return;
+            }
         }
         
         if (UpdateIsSuccessful(Email, newPassword))
@@ -90,11 +95,6 @@ public partial class SettingsViewModel : ObservableObject
 
     public bool PasswordIsValid(string? password)
     {
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            return false;
-        }
-
         // a pattern that may protect against sql injection, 
         // but this should be done on the server side
         const string pattern = @"[\s]*((delete)|(exec)|(drop\s*table)|(insert)|(shutdown)|(update)|(\bor\b))";
