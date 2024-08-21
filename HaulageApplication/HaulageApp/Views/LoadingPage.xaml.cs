@@ -1,5 +1,3 @@
-using HaulageApp.ViewModels;
-
 namespace HaulageApp.Views;
 
 public partial class LoadingPage : ContentPage
@@ -11,7 +9,7 @@ public partial class LoadingPage : ContentPage
     }
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        if (await IsAuthenticated())
+        if (IsAuthenticated())
         {
             await Shell.Current.GoToAsync("///home");
         }
@@ -22,9 +20,9 @@ public partial class LoadingPage : ContentPage
         base.OnNavigatedTo(args);
     }
 
-    async Task<bool> IsAuthenticated()
+    private bool IsAuthenticated()
     {
-        var hasAuth = await SecureStorage.GetAsync("hasAuth");
-        return hasAuth != null;
+        var hasAuth = Preferences.Default.ContainsKey("hasAuth");
+        return hasAuth;
     }
 }

@@ -39,7 +39,7 @@ public static class MauiProgram
         
         builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
 
-        builder.Services.AddSingleton<ISecureStorageWrapper>(implementationFactory => new SecureStorageWrapper());
+        builder.Services.AddSingleton<IPreferencesWrapper>(implementationFactory => new PreferencesWrapper());
                     
         builder.Services.AddSingleton<AllNotesViewModel>();
         builder.Services.AddTransient<NoteViewModel>();

@@ -10,12 +10,12 @@ namespace HaulageApp.ViewModels;
 public partial class SettingsViewModel : ObservableObject
 {
     private readonly HaulageDbContext _context;
-    private readonly ISecureStorageWrapper _storageWrapper;
+    private readonly IPreferencesWrapper _preferencesWrapper;
 
-    public SettingsViewModel(HaulageDbContext dbContext, ISecureStorageWrapper storageWrapper)
+    public SettingsViewModel(HaulageDbContext dbContext, IPreferencesWrapper preferencesWrapper)
     {
         _context = dbContext;
-        _storageWrapper = storageWrapper;
+        _preferencesWrapper = preferencesWrapper;
         GetEmail();
     }
 
@@ -30,9 +30,9 @@ public partial class SettingsViewModel : ObservableObject
         }
     }
 
-    private async Task GetEmail()
+    private void GetEmail()
     {
-        Email = await _storageWrapper.GetAsync("hasAuth") ?? "Error retrieving email.";
+        Email = _preferencesWrapper.Get<string>("hasAuth", "Error retrieving email.");
     }
 
     [RelayCommand]
@@ -88,7 +88,7 @@ public partial class SettingsViewModel : ObservableObject
     {
         if (await Shell.Current.DisplayAlert("", "Log out of your account?", "Log out", "Cancel"))
         {
-            SecureStorage.Remove("hasAuth");
+            _preferencesWrapper.Clear();
             await Shell.Current.GoToAsync("///login");
         }
     }
