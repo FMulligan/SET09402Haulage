@@ -40,9 +40,19 @@ public static class MauiProgram
         builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
 
         builder.Services.AddSingleton<IPreferencesWrapper>(implementationFactory => new PreferencesWrapper());
+        builder.Services.AddSingleton<INavigationService>(implementationFactory => new NavigationService());
                     
         builder.Services.AddSingleton<AllNotesViewModel>();
         builder.Services.AddTransient<NoteViewModel>();
+        
+        builder.Services.AddSingleton<TripViewModel>();
+        builder.Services.AddTransient<TripPage>();
+        
+        builder.Services.AddTransient<ExpensesViewModel>();
+        builder.Services.AddTransient<ExpensesPage>();
+        
+        builder.Services.AddTransient<EditExpenseViewModel>();
+        builder.Services.AddTransient<EditExpensePage>();
         
         builder.Services.AddSingleton<SettingsViewModel>();
         builder.Services.AddTransient<SettingsPage>();

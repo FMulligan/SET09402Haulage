@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HaulageApp.Views.TripPage"
@@ -37,7 +39,17 @@
                             </CollectionView>
 
                             <!-- Edit/Save Button -->
-                            <Button Text="{Binding EditSaveButtonText}" Command="{Binding ToggleEditCommand}" />
+                            <VerticalStackLayout Padding="10" Spacing="4">
+                                <Button 
+                                    Text="{Binding EditSaveButtonText}" 
+                                    Command="{Binding ToggleEditCommand}"
+                                    FontSize="16"
+                                />
+                                <Button
+                                    Text="Manage expenses"
+                                    FontSize="16"
+                                    Command="{Binding GoToExpensesCommand}"/>
+                            </VerticalStackLayout>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

@@ -94,6 +94,15 @@
       <MauiXaml Update="Views\AllVehiclesPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>  
+      <MauiXaml Update="Views\TripPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Views\ExpensesPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Views\EditExpensePage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -127,6 +136,18 @@
       </Compile>
       <Compile Update="Views\AllVehiclesPage.xaml.cs">
         <DependentUpon>AllVehiclesPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\TripPage.xaml.cs">
+        <DependentUpon>TripsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ExpensesPage.xaml.cs">
+        <DependentUpon>ExpensesPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\EditExpensePage.xaml.cs">
+        <DependentUpon>ExpensePage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\TripPage.xaml.cs">
