@@ -37,7 +37,7 @@ public partial class LoginViewModel : ObservableObject
         switch (isCredentialCorrect)
         {
             case true:
-                await SecureStorage.SetAsync("hasAuth", Email);
+                Preferences.Default.Set("hasAuth", Email);
                 await Shell.Current.GoToAsync("///home");
                 break;
             case false when connected:

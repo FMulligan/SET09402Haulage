@@ -6,17 +6,17 @@ namespace HaulageAppTests;
 public class UserSettingsTest
 {
     private MockDb db = new();
-    private FakeSecureStorageWrapper fakeStorage = new();
+    private FakePreferencesWrapper fakeStorage = new();
 
     [Fact]
-    public async void ReturnsUserEmailWhenAuthenticated()
+    public void ReturnsUserEmailWhenAuthenticated()
     {
         var options = db.CreateContextOptions();
         db.CreateContext(options);
 
         using (var context = new HaulageDbContext(options))
         {
-            await fakeStorage.SetAsync("hasAuth", "testEmail");
+            fakeStorage.Set<string>("hasAuth", "testEmail");
             var viewmodel = new SettingsViewModel(context, fakeStorage);
             Assert.Equal("testEmail", viewmodel.Email);
         }
