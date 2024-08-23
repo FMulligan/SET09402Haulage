@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using HaulageApp.Data;
 using HaulageApp.Models;
 
@@ -15,6 +16,8 @@ namespace HaulageApp.ViewModels
 
         private string _tempStartTimeString;
         private string _tempEndTimeString;
+        
+        public ICommand GoToExpensesCommand { get; set; }
 
         public TripItemViewModel(Trip trip, HaulageDbContext context)
         {
@@ -36,9 +39,17 @@ namespace HaulageApp.ViewModels
                 OnPropertyChanged(nameof(EditSaveButtonText));
                 OnPropertyChanged(nameof(IsEditing));
             });
+            
+            GoToExpensesCommand = new AsyncRelayCommand(GoToExpensesAsync);
         }
 
         public int TripId => _trip.Id;
+        
+        private async Task GoToExpensesAsync()
+        {
+            await Shell.Current.GoToAsync("expenses",
+                new Dictionary<string, object> { { "trip", _trip } });
+        }
 
         public string Status
         {

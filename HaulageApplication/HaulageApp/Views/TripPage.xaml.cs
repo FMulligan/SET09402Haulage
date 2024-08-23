@@ -1,5 +1,4 @@
 using HaulageApp.ViewModels;
-using Microsoft.Maui.Controls;
 
 namespace HaulageApp.Views
 {
@@ -7,8 +6,8 @@ namespace HaulageApp.Views
     {
         public TripPage(TripViewModel viewModel)
         {
-            InitializeComponent();
             BindingContext = viewModel;
+            InitializeComponent();
         }
     }
 }
