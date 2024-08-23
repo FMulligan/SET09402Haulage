@@ -7,55 +7,41 @@ public class PermissionsModelTests
 {
     private readonly MockDb _db = new();
     private FakePreferencesWrapper fakeStorage = new();
-    
+    private readonly HaulageDbContext _context;
+    private PermissionsViewModel _viewModel;
+
+    public PermissionsModelTests()
+    {
+        var options = _db.CreateContextOptions();
+        _db.CreateContext(options);
+        _context = new HaulageDbContext(options);
+        _viewModel = new PermissionsViewModel(_context, fakeStorage);
+    }
+
     [Fact]
     public void AssertPageVisibilityWhenUserIsCustomer()
     {
-        var options = _db.CreateContextOptions();
-        _db.CreateContext(options);
-
-        using (var context = new HaulageDbContext(options))
-        {
-            PermissionsViewModel permissionsViewModel = new PermissionsViewModel(context, fakeStorage);
-
-            fakeStorage.Set<string>("hasAuth", "customer");
-            permissionsViewModel.UpdateTabsForCurrentUser();
-            Assert.False(permissionsViewModel.ManageCustomersIsVisible);
-            Assert.False(permissionsViewModel.NotesIsVisible);
-        }
+        fakeStorage.Set<string>("hasAuth", "customer");
+        _viewModel.UpdateTabsForCurrentUser();
+        Assert.False(_viewModel.ManageCustomersIsVisible);
+        Assert.False(_viewModel.NotesIsVisible);
     }
-    
+
     [Fact]
     public void AssertPageVisibilityWhenUserIsDriver()
     {
-        var options = _db.CreateContextOptions();
-        _db.CreateContext(options);
-
-        using (var context = new HaulageDbContext(options))
-        {
-            PermissionsViewModel permissionsViewModel = new PermissionsViewModel(context, fakeStorage);
-
-            fakeStorage.Set<string>("hasAuth", "driver");
-            permissionsViewModel.UpdateTabsForCurrentUser();
-            Assert.False(permissionsViewModel.ManageCustomersIsVisible);
-            Assert.True(permissionsViewModel.NotesIsVisible);
-        }
+        fakeStorage.Set<string>("hasAuth", "driver");
+        _viewModel.UpdateTabsForCurrentUser();
+        Assert.False(_viewModel.ManageCustomersIsVisible);
+        Assert.True(_viewModel.NotesIsVisible);
     }
-    
+
     [Fact]
     public void AssertPageVisibilityWhenUserIsAdmin()
     {
-        var options = _db.CreateContextOptions();
-        _db.CreateContext(options);
-
-        using (var context = new HaulageDbContext(options))
-        {
-            PermissionsViewModel permissionsViewModel = new PermissionsViewModel(context, fakeStorage);
-
-            fakeStorage.Set<string>("hasAuth", "admin");
-            permissionsViewModel.UpdateTabsForCurrentUser();
-            Assert.True(permissionsViewModel.ManageCustomersIsVisible);
-            Assert.False(permissionsViewModel.NotesIsVisible);
-        }
+        fakeStorage.Set<string>("hasAuth", "admin");
+        _viewModel.UpdateTabsForCurrentUser();
+        Assert.True(_viewModel.ManageCustomersIsVisible);
+        Assert.False(_viewModel.NotesIsVisible);
     }
 }
