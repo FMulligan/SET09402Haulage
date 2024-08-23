@@ -7,12 +7,12 @@
     <VerticalStackLayout Spacing="10" Margin="5">
         <Editor x:Name="TypeEditor"
                 Placeholder="Enter the Type"
-                Text="{Binding Type}"
-                HeightRequest="100"/>
+                HeightRequest="50"
+                Text="{Binding Type}"/>
         <Editor x:Name="CapacityEditor"
                 Placeholder="Enter the Capacity"
-                Text="{Binding Capacity}"
-                HeightRequest="100"/>
+                HeightRequest="50"
+                Text="{Binding Capacity}"/>
         <CollectionView x:Name="StatusSelector"
                         SelectionMode="Single"
                         SelectedItem="{Binding Status}">
@@ -23,7 +23,6 @@
                             </x:Array>
                         </CollectionView.ItemsSource>
         </CollectionView>
-
         <Grid ColumnDefinitions="*,*" ColumnSpacing="4">
             <Button Text="Save"
                     Command="{Binding SaveCommand}"/>
