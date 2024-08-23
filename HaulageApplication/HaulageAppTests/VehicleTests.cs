@@ -12,25 +12,34 @@ public class VehicleTests
 {
     private readonly Mock<HaulageDbContext> _mockContext;
     private readonly Mock<DbSet<Vehicle>> _mockVehicle;
+    private readonly Vehicle _vehicle;
     
     public VehicleTests()
     {
         _mockContext = new Mock<HaulageDbContext>();
         _mockVehicle = new Mock<DbSet<Vehicle>>();
+        
+        _vehicle = new Vehicle
+        {
+            Id = 1,
+            Type = "Van",
+            Capacity = 500,
+            Status = "available"
+        };
         _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
     }
 
     [Fact]
     public Task SaveShouldAddVehicleToDbWhenNew()
     {
-        var vehicle = new Vehicle
+        var newVehicle = new Vehicle
         {
             Id = 0,
             Type = "Van",
             Capacity = 500,
             Status = "available"
         };
-        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
+        var viewModel = new VehicleViewModel(_mockContext.Object, newVehicle);
         viewModel.SaveCommand.Execute(null);
         _mockVehicle.Verify(c => c.Add(It.IsAny<Vehicle>()), Times.Once);
         _mockContext.Verify(c => c.SaveChanges(), Times.Once);
@@ -40,14 +49,7 @@ public class VehicleTests
     [Fact]
     public Task SaveShouldUpdateVehicleToDbWhenExists()
     {
-        var vehicle = new Vehicle
-        {
-            Id = 1,
-            Type = "Van",
-            Capacity = 500,
-            Status = "available"
-        };
-        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle)
+        var viewModel = new VehicleViewModel(_mockContext.Object, _vehicle)
         {
             Type="Van",
             Capacity = 50,
@@ -63,14 +65,7 @@ public class VehicleTests
     [Fact]
     public Task DeleteShouldRemoveVehicle()
     {
-        var vehicle = new Vehicle
-        {
-            Id = 1,
-            Type = "Van",
-            Capacity = 500,
-            Status = "available"
-        };
-        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
+        var viewModel = new VehicleViewModel(_mockContext.Object, _vehicle);
         viewModel.DeleteCommand.Execute(null);
         
         _mockVehicle.Verify(c => c.Remove(It.IsAny<Vehicle>()), Times.Once);
@@ -81,15 +76,8 @@ public class VehicleTests
     [Fact]
     public void ReloadShouldReloadContext()
     {
-        var vehicle = new Vehicle
-        {
-            Id = 1,
-            Type = "Van",
-            Capacity = 500,
-            Status = "available"
-        };
-        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
-        _mockContext.Setup(c => c.Entry(vehicle)).Returns(new Mock<FakeEntityEntry<Vehicle>>().Object);
+        var viewModel = new VehicleViewModel(_mockContext.Object, _vehicle);
+        _mockContext.Setup(c => c.Entry(_vehicle)).Returns(new Mock<FakeEntityEntry<Vehicle>>().Object);
         viewModel.Reload();
         
         _mockContext.Verify(c => c.Entry(It.IsAny<Vehicle>()).Reload(), Times.Once);
