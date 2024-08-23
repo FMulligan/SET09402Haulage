@@ -48,13 +48,16 @@ public static class MauiProgram
         builder.Services.AddSingleton<TripViewModel>();
         builder.Services.AddTransient<TripPage>();
         
+        builder.Services.AddTransient<ManageCustomersViewModel>();
+        builder.Services.AddTransient<ManageCustomersPage>();
+        
         builder.Services.AddTransient<ExpensesViewModel>();
         builder.Services.AddTransient<ExpensesPage>();
         
         builder.Services.AddTransient<EditExpenseViewModel>();
         builder.Services.AddTransient<EditExpensePage>();
         
-        builder.Services.AddSingleton<SettingsViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<SettingsPage>();
         
         builder.Services.AddSingleton<LoginViewModel>();
@@ -70,6 +73,9 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<TripViewModel>();
         builder.Services.AddTransient<TripPage>();
+
+        builder.Services.AddTransient<AppShell>();
+        builder.Services.AddSingleton<PermissionsViewModel>();
         
 #if DEBUG
         builder.Logging.AddDebug();

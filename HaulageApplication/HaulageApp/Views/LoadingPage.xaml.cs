@@ -11,7 +11,11 @@ public partial class LoadingPage : ContentPage
     {
         if (IsAuthenticated())
         {
-            await Shell.Current.GoToAsync("///home");
+            // Should be a page that all roles have access to, e.g. settings.
+            // Another option is to add the role to user defaults and can go 
+            // to a different page based on which role is logged in. (e.g. switch
+            // case based on role)
+            await Shell.Current.GoToAsync("///settings");
         }
         else
         {
@@ -22,7 +26,6 @@ public partial class LoadingPage : ContentPage
 
     private bool IsAuthenticated()
     {
-        var hasAuth = Preferences.Default.ContainsKey("hasAuth");
-        return hasAuth;
+        return Preferences.Default.ContainsKey("hasAuth");
     }
 }

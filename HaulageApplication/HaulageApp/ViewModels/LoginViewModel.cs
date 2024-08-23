@@ -8,14 +8,18 @@ namespace HaulageApp.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly HaulageDbContext _context;
+    private readonly PermissionsViewModel _permissionsViewModel;
 
-    public LoginViewModel(HaulageDbContext dbContext)
+    public LoginViewModel(HaulageDbContext dbContext, PermissionsViewModel permissionsViewModel)
     {
         _context = dbContext;
+        _permissionsViewModel = permissionsViewModel;
     }
 
     public string Email { get; set; } = "";
     public string Password { get; set; } = "";
+    
+    public User? User { get; set; }
 
     [RelayCommand]
     private async Task Login()
@@ -25,7 +29,11 @@ public partial class LoginViewModel : ObservableObject
 
         try
         {
-            isCredentialCorrect = IsCredentialCorrect(Email, Password);
+            User = GetUser(Email);
+            if (User != null)
+            {
+                isCredentialCorrect = IsCredentialCorrect(User, Password);
+            }
         }
         catch (Exception e)
         {
@@ -38,7 +46,12 @@ public partial class LoginViewModel : ObservableObject
         {
             case true:
                 Preferences.Default.Set("hasAuth", Email);
-                await Shell.Current.GoToAsync("///home");
+                // we could also set the role in user defaults here if needed 
+                _permissionsViewModel.UpdateTabsForCurrentUser(User!.Role);
+                // as mentioned on LoadingPage, this should either be a page that all roles have access to,
+                // e.g. settings. Another option is to go to a different page based on which role is logged in.
+                // (e.g. switch case based on role)
+                await Shell.Current.GoToAsync("///settings");
                 break;
             case false when connected:
                 await Shell.Current.DisplayAlert("Login failed", "Username or password is incorrect", "Try again");
@@ -46,11 +59,19 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    public bool IsCredentialCorrect(string username, string password)
+    private User? GetUser(string username)
     {
-        User? user = _context.user
+        return _context.user
             .AsQueryable()
-            .FirstOrDefault(user => user.Email == username.ToLower() && user.Password == password);
-        return user != null;
+            .FirstOrDefault(u => u.Email == username.ToLower());
+    }
+
+    public bool IsCredentialCorrect(User user, string password)
+    {
+        if (user.Password == password)
+        {
+            return true;
+        }
+        return false;
     }
 }
