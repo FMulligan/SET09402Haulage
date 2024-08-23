@@ -18,12 +18,13 @@
         Route="login" />
 
     <TabBar>
-        <Tab Title="Home"
+        <Tab Title="Notes"
              Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}">
             <ShellContent
                 Title="Home"
                 ContentTemplate="{DataTemplate views:AllNotesPage}"
-                Route="home" />
+                IsVisible="{Binding NotesIsVisible}"
+                Route="notes" />
         </Tab>
 
         <Tab Title="About"
@@ -46,6 +47,14 @@
                 Title="Trip"
                 ContentTemplate="{DataTemplate views:TripPage}"
                 Route="trip"/>
+        </Tab>
+        
+        <Tab Title="Manage Customers" Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}">
+            <ShellContent
+                Title="Manage Customers"
+                ContentTemplate="{DataTemplate views:ManageCustomersPage}"
+                IsVisible="{Binding ManageCustomersIsVisible}"
+                Route="manageCustomers"/>
         </Tab>
         
         <Tab Title="Settings" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">

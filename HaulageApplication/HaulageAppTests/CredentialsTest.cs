@@ -1,37 +1,41 @@
 using HaulageApp.Data;
+using HaulageApp.Models;
 using HaulageApp.ViewModels;
 
 namespace HaulageAppTests;
 
 public class CredentialsTest
 {
-    private MockDb db = new();
+    private readonly MockDb _db = new();
     
     [Fact]
     public void CredentialsReturnsTrueWhenDataExists()
     {
-        var options = db.CreateContextOptions();
-        
-        db.CreateContext(options);
+        var options = _db.CreateContextOptions();
+        _db.CreateContext(options);
         
         using (var context = new HaulageDbContext(options))
         {
-            var viewmodel = new LoginViewModel(context);
-            Assert.True(viewmodel.IsCredentialCorrect("customer", "1234"));
+            var permissionsViewModel = new PermissionsViewModel(context);
+            var viewmodel = new LoginViewModel(context, permissionsViewModel);
+            User? user = context.user.FirstOrDefault();
+            Assert.True(viewmodel.IsCredentialCorrect(user!, "1234"));
         }
     }
     
     [Fact]
     public void CredentialsReturnsFalseWhenDataDoesNotExist()
     {
-        var options = db.CreateContextOptions();
+        var options = _db.CreateContextOptions();
         
-        db.CreateContext(options);
+        _db.CreateContext(options);
         
         using (var context = new HaulageDbContext(options))
         {
-            var viewmodel = new LoginViewModel(context);
-            Assert.False(viewmodel.IsCredentialCorrect("who", "1234"));
+            var permissionsViewModel = new PermissionsViewModel(context);
+            var viewmodel = new LoginViewModel(context, permissionsViewModel);
+            User? user = context.user.FirstOrDefault();
+            Assert.False(viewmodel.IsCredentialCorrect(user!, "3456"));
         }
     }
 }
