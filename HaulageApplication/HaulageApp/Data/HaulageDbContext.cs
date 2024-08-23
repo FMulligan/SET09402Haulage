@@ -15,5 +15,10 @@ namespace HaulageApp.Data
         public DbSet<Trip> trip { get; set; }
         public virtual DbSet<Vehicle> vehicle { get; set; }
         public virtual DbSet<Expense> expense { get; set; }
+        
+        public DbSet<Bill> bill { get; set; }
+        
+        public DbSet<Item> item { get; set; }
+
     }
 }

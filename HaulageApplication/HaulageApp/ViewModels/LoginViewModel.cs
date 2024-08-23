@@ -47,6 +47,8 @@ public partial class LoginViewModel : ObservableObject
             case true:
                 Preferences.Default.Set("hasAuth", Email);
                 // we could also set the role in user defaults here if needed 
+                Preferences.Set("currentUserId", User.Id);
+                Preferences.Set("currentUserRole", User.Role);
                 _permissionsViewModel.UpdateTabsForCurrentUser(User!.Role);
                 // as mentioned on LoadingPage, this should either be a page that all roles have access to,
                 // e.g. settings. Another option is to go to a different page based on which role is logged in.
