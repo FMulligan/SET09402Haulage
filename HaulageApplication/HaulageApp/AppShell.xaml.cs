@@ -19,6 +19,5 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(VehiclePage), typeof(VehiclePage));
         Routing.RegisterRoute(nameof(EditExpensePage), typeof(EditExpensePage));
         
-        viewmodel.UpdateTabsForCurrentUser();
     }
 }

@@ -1,18 +1,29 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using HaulageApp.Common;
 using HaulageApp.Data;
 using HaulageApp.Models;
 
 namespace HaulageApp.ViewModels;
 
-public partial class PermissionsViewModel(HaulageDbContext dbContext) : ObservableObject
+public partial class PermissionsViewModel : ObservableObject
 {
     [ObservableProperty] private bool _manageCustomersIsVisible;
     // example (using notes)
     [ObservableProperty] private bool _notesIsVisible;
+    
+    private readonly HaulageDbContext _dbContext;
+    private readonly IPreferencesWrapper _preferencesWrapper;
+
+    public PermissionsViewModel(HaulageDbContext dbContext, IPreferencesWrapper preferencesWrapper)
+    {
+        _dbContext = dbContext;
+        _preferencesWrapper = preferencesWrapper;
+        UpdateTabsForCurrentUser();
+    }
 
     public void UpdateTabsForCurrentUser()
     {
-        var username = Preferences.Get("hasAuth", "");
+        var username = _preferencesWrapper.Get<string>("hasAuth", "");
         var user = GetUser(username);
         if (user != null)
         {
@@ -27,7 +38,7 @@ public partial class PermissionsViewModel(HaulageDbContext dbContext) : Observab
 
     private User? GetUser(string username)
     {
-        return dbContext.user
+        return _dbContext.user
             .AsQueryable()
             .FirstOrDefault(u => u.Email == username.ToLower());
     }
