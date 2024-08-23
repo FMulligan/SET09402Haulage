@@ -3,6 +3,7 @@ using HaulageApp.Data;
 using HaulageApp.Models;
 using HaulageApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 
 namespace HaulageAppTests;
@@ -16,10 +17,28 @@ public class VehicleTests
     {
         _mockContext = new Mock<HaulageDbContext>();
         _mockVehicle = new Mock<DbSet<Vehicle>>();
+        _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
     }
 
     [Fact]
-    public async Task SaveShouldAddVehicleToDbWhenNew()
+    public Task SaveShouldAddVehicleToDbWhenNew()
+    {
+        var vehicle = new Vehicle
+        {
+            Id = 0,
+            Type = "Van",
+            Capacity = 500,
+            Status = "available"
+        };
+        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
+        viewModel.SaveCommand.Execute(null);
+        _mockVehicle.Verify(c => c.Add(It.IsAny<Vehicle>()), Times.Once);
+        _mockContext.Verify(c => c.SaveChanges(), Times.Once);
+        return Task.CompletedTask;
+    }
+
+    [Fact]
+    public Task SaveShouldUpdateVehicleToDbWhenExists()
     {
         var vehicle = new Vehicle
         {
@@ -28,26 +47,6 @@ public class VehicleTests
             Capacity = 500,
             Status = "available"
         };
-        _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
-        var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
-
-        await viewModel.SaveCommand.ExecuteAsync(null);
-        _mockVehicle.Verify(c => c.Add(It.IsAny<Vehicle>()), Times.Once);
-        _mockContext.Verify(c => c.SaveChanges(), Times.Once);
-        
-    }
-
-    [Fact]
-    public async Task SaveShouldUpdateVehicleToDbWhenExists()
-    {
-        var vehicle = new Vehicle
-        {
-            Id = 1,
-            Type = "Truck",
-            Capacity = 500,
-            Status = "available"
-        };
-        _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
         var viewModel = new VehicleViewModel(_mockContext.Object, vehicle)
         {
             Type="Van",
@@ -55,46 +54,45 @@ public class VehicleTests
             Status="in use"
         };
 
-        await viewModel.SaveCommand.ExecuteAsync(null);
+        viewModel.SaveCommand.Execute(null);
         _mockVehicle.Verify(c => c.Add(It.IsAny<Vehicle>()), Times.Never);
         _mockContext.Verify(c => c.SaveChanges(), Times.Once);
+        return Task.CompletedTask;
     }
 
     [Fact]
-    public async Task DeleteShouldRemoveVehicle()
+    public Task DeleteShouldRemoveVehicle()
     {
         var vehicle = new Vehicle
         {
             Id = 1,
-            Type = "Truck",
+            Type = "Van",
             Capacity = 500,
             Status = "available"
         };
-        _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
         var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
+        viewModel.DeleteCommand.Execute(null);
         
-        await viewModel.SaveCommand.ExecuteAsync(null);
         _mockVehicle.Verify(c => c.Remove(It.IsAny<Vehicle>()), Times.Once);
         _mockContext.Verify(c => c.SaveChanges(), Times.Once);
+        return Task.CompletedTask;
     }
 
     [Fact]
-    public async Task ReloadShouldReloadContext()
+    public void ReloadShouldReloadContext()
     {
         var vehicle = new Vehicle
         {
             Id = 1,
-            Type = "Truck",
+            Type = "Van",
             Capacity = 500,
             Status = "available"
         };
-        _mockContext.Setup(c => c.vehicle).Returns(_mockVehicle.Object);
         var viewModel = new VehicleViewModel(_mockContext.Object, vehicle);
-        
+        _mockContext.Setup(c => c.Entry(vehicle)).Returns(new Mock<FakeEntityEntry<Vehicle>>().Object);
         viewModel.Reload();
         
         _mockContext.Verify(c => c.Entry(It.IsAny<Vehicle>()).Reload(), Times.Once);
         
     }
-
 }

@@ -15,6 +15,7 @@
                 Text="{Binding Capacity}"/>
         <CollectionView x:Name="StatusSelector"
                         SelectionMode="Single"
+                        HeightRequest="50"
                         SelectedItem="{Binding Status}">
                         <CollectionView.ItemsSource>
                             <x:Array Type="{x:Type x:String}">

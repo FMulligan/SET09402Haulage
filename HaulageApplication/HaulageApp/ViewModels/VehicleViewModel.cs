@@ -26,8 +26,8 @@ public partial class VehicleViewModel : ObservableObject, IQueryAttributable, IN
         _vehicle = vehicle;
     }
 
-    public bool HasErrors => _errors.Any();
-    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+    public bool HasErrors => _errors.Count != 0;
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
     public IEnumerable GetErrors(string property)
     {
@@ -101,7 +101,7 @@ public partial class VehicleViewModel : ObservableObject, IQueryAttributable, IN
     [RelayCommand]
     private async Task Delete()
     {
-        _context.Remove(_vehicle);
+        _context.vehicle.Remove(_vehicle);
         _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?deleted={_vehicle.Id}");
     }
