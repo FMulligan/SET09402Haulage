@@ -11,32 +11,33 @@ namespace HaulageApp.ViewModels
     public class TripItemViewModel : INotifyPropertyChanged
     {
         private readonly HaulageDbContext _context;
+        private readonly bool _canEdit;
         private Trip _trip;
         private bool _isEditing;
 
         private string _tempStartTimeString;
         private string _tempEndTimeString;
-        
+
         public ICommand GoToExpensesCommand { get; set; }
         public ICommand GoToEventsCommand { get; set; }
 
-        public TripItemViewModel(Trip trip, HaulageDbContext context)
+        public TripItemViewModel(Trip trip, HaulageDbContext context, bool canEdit)
         {
             _trip = trip;
             _context = context;
-
+            _canEdit = canEdit;
+            
             _tempStartTimeString = _trip.StartTime.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
             _tempEndTimeString = _trip.EndTime?.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) ?? string.Empty;
-
+            
             ToggleEditCommand = new Command(async () =>
             {
-                if (IsEditing)
+                if (IsEditing && _canEdit)
                 {
                     await SaveTrip();
                 }
 
                 IsEditing = !IsEditing;
-
                 OnPropertyChanged(nameof(EditSaveButtonText));
                 OnPropertyChanged(nameof(IsEditing));
             });
@@ -46,12 +47,6 @@ namespace HaulageApp.ViewModels
         }
 
         public int TripId => _trip.Id;
-        
-        private async Task GoToExpensesAsync()
-        {
-            await Shell.Current.GoToAsync("expenses",
-                new Dictionary<string, object> { { "trip", _trip } });
-        }
         
         private async Task GoToEventsAsync()
         {
@@ -102,14 +97,14 @@ namespace HaulageApp.ViewModels
 
         public bool IsEditing
         {
-            get => _isEditing;
+            get => _isEditing && _canEdit;
             set
             {
                 if (_isEditing != value)
                 {
                     _isEditing = value;
                     OnPropertyChanged(nameof(IsEditing));
-                    OnPropertyChanged(nameof(EditSaveButtonText)); // Notify change here to update button text
+                    OnPropertyChanged(nameof(EditSaveButtonText));
                 }
             }
         }
@@ -171,6 +166,13 @@ namespace HaulageApp.ViewModels
                 }
             }
         }
+
+        private async Task GoToExpensesAsync()
+        {
+            await Shell.Current.GoToAsync("expenses", new Dictionary<string, object> { { "trip", _trip } });
+        }
+        
+        public bool IsEditButtonVisible => _canEdit;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

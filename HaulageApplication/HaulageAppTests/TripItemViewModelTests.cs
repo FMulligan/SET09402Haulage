@@ -20,7 +20,7 @@ namespace HaulageApp.Tests
                 Status = "ongoing",
                 UpdatedAt = DateTime.Now
             };
-            var viewModel = new TripItemViewModel(trip, mockContext.Object)
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, true)
             {
                 StartTimeString = "2024-08-19 09:00",
                 EndTimeString = "2024-08-19 12:00"
@@ -31,9 +31,8 @@ namespace HaulageApp.Tests
             Assert.Equal("completed", viewModel.Status); // Status should be updated to completed
         }
 
-
         [Fact]
-        public async Task SaveTrip_ShouldChangeStatus_WhenEndTimeIsNotrefinedButUpdatedAtWasChanged()
+        public async Task SaveTrip_ShouldChangeStatus_WhenEndTimeIsNotDefinedButUpdatedAtWasChanged()
         {
             var mockContext = new Mock<HaulageDbContext>(new DbContextOptions<HaulageDbContext>());
             var trip = new Trip
@@ -45,7 +44,7 @@ namespace HaulageApp.Tests
                 UpdatedAt = DateTime.Now
             };
             
-            var viewModel = new TripItemViewModel(trip, mockContext.Object)
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, true)
             {
                 StartTimeString = trip.StartTime.ToString("yyyy-MM-dd HH:mm"),
                 EndTimeString = "" // No changes made to EndTime
@@ -72,7 +71,7 @@ namespace HaulageApp.Tests
             mockContext.Setup(c => c.Update(It.IsAny<Trip>())).Verifiable();
             mockContext.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
 
-            var viewModel = new TripItemViewModel(trip, mockContext.Object)
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, true)
             {
                 StartTimeString = "2024-08-19 08:00",
                 EndTimeString = "2024-08-19 12:00"
@@ -97,13 +96,49 @@ namespace HaulageApp.Tests
                 UpdatedAt = DateTime.Now
             };
 
-            var viewModel = new TripItemViewModel(trip, mockContext.Object);
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, true);
 
             Assert.False(viewModel.IsEditing); // Initially not editing
             viewModel.ToggleEditCommand.Execute(null);
             Assert.True(viewModel.IsEditing); // Should be editing after first toggle
             viewModel.ToggleEditCommand.Execute(null);
             Assert.False(viewModel.IsEditing); // Should not be editing after second toggle
+        }
+
+        [Fact]
+        public void TripItemViewModel_IsDriver_ShouldAllowEditing_ForDrivers()
+        {
+            var mockContext = new Mock<HaulageDbContext>(new DbContextOptions<HaulageDbContext>());
+            var trip = new Trip
+            {
+                Id = 1,
+                StartTime = DateTime.Parse("2024-08-19 08:00"),
+                EndTime = DateTime.Parse("2024-08-19 12:00"),
+                Status = "completed",
+                UpdatedAt = DateTime.Now
+            };
+
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, true); // true indicates the user is a driver
+
+            Assert.True(viewModel.IsEditButtonVisible); // Drivers can edit
+        }
+
+        [Fact]
+        public void TripItemViewModel_IsAdmin_ShouldNotAllowEditing_ForAdmins()
+        {
+            var mockContext = new Mock<HaulageDbContext>(new DbContextOptions<HaulageDbContext>());
+            var trip = new Trip
+            {
+                Id = 1,
+                StartTime = DateTime.Parse("2024-08-19 08:00"),
+                EndTime = DateTime.Parse("2024-08-19 12:00"),
+                Status = "completed",
+                UpdatedAt = DateTime.Now
+            };
+
+            var viewModel = new TripItemViewModel(trip, mockContext.Object, false); // false indicates the user is not a driver (admin)
+
+            Assert.False(viewModel.IsEditButtonVisible); // Admins cannot edit
         }
     }
 }

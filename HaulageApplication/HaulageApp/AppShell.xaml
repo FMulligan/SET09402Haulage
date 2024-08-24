@@ -46,6 +46,8 @@
             <ShellContent
                 Title="Trip"
                 ContentTemplate="{DataTemplate views:TripPage}"
+                IsVisible="{Binding TripsIsVisible}"
+
                 Route="trip"/>
         </Tab>
         

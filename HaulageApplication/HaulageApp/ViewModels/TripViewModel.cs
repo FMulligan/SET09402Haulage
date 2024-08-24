@@ -1,5 +1,6 @@
-using HaulageApp.Data;
 using System.Collections.ObjectModel;
+using HaulageApp.Data;
+using HaulageApp.Services;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ namespace HaulageApp.ViewModels
     public class TripViewModel : INotifyPropertyChanged
     {
         private readonly HaulageDbContext _context;
+        private readonly IUserService _userService;
         private ObservableCollection<TripItemViewModel> _tripGroups;
 
         public ObservableCollection<TripItemViewModel> TripGroups
@@ -20,26 +22,29 @@ namespace HaulageApp.ViewModels
             }
         }
 
-        public TripViewModel(HaulageDbContext context)
+        public TripViewModel(HaulageDbContext context, IUserService userService)
         {
             _context = context;
-            LoadData();
+            _userService = userService;
         }
 
-        private async void LoadData()
+        public async Task LoadDataAsync()
         {
             try
             {
+                bool canEdit = _userService.IsDriver();
+
                 var trips = await _context.trip
                     .Include(t => t.Waypoints)
                     .ToListAsync();
 
                 TripGroups = new ObservableCollection<TripItemViewModel>(
-                    trips.Select(trip => new TripItemViewModel(trip, _context))
+                    trips.Select(trip => new TripItemViewModel(trip, _context, canEdit))
                 );
             }
             catch (Exception ex)
             {
+                TripGroups = new ObservableCollection<TripItemViewModel>(); 
                 Console.WriteLine($"Error loading data: {ex.Message}");
                 if (ex.InnerException != null)
                 {
