@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Maui;
 using HaulageApp.Common;
+using HaulageApp.Services;
 
 namespace HaulageApp;
 
@@ -39,6 +40,9 @@ public static class MauiProgram
         
         builder.Services.AddDbContext<HaulageDbContext>(options => options.UseSqlServer(connectionString));
 
+        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddTransient<LoginPage>();
+        
         builder.Services.AddSingleton<IPreferencesWrapper>(implementationFactory => new PreferencesWrapper());
         builder.Services.AddSingleton<INavigationService>(implementationFactory => new NavigationService());
                     
@@ -60,9 +64,6 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<SettingsPage>();
         
-        builder.Services.AddSingleton<LoginViewModel>();
-        builder.Services.AddTransient<LoginPage>();
-        
         builder.Services.AddSingleton<AllNotesPage>();
         builder.Services.AddTransient<NotePage>();
         
@@ -77,6 +78,13 @@ public static class MauiProgram
         builder.Services.AddTransient<AppShell>();
         builder.Services.AddSingleton<PermissionsViewModel>();
         
+        builder.Services.AddSingleton<IBillService, BillService>();
+        builder.Services.AddSingleton<IUserService, UserService>();
+
+        builder.Services.AddTransient<AllBillsViewModel>();
+        builder.Services.AddTransient<AllBillsPage>();
+
+ 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
