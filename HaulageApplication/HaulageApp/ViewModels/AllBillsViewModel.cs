@@ -1,50 +1,66 @@
 using System.Collections.ObjectModel;
-using HaulageApp.Data;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using HaulageApp.Services;
 using Microsoft.Extensions.Logging;
 
 namespace HaulageApp.ViewModels
 {
-    public class AllBillsViewModel
+    public class AllBillsViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<BillViewModel> AllBills { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly HaulageDbContext _context;
+        private ObservableCollection<BillViewModel> _allBills;
+        public ObservableCollection<BillViewModel> AllBills
+        {
+            get => _allBills;
+            private set
+            {
+                if (_allBills != value)
+                {
+                    _allBills = value;
+                    OnPropertyChanged(nameof(AllBills));
+                }
+            }
+        }
+
+        private readonly IBillService _billService;
+        private readonly IUserService _userService;
         private readonly ILogger<AllBillsViewModel> _logger;
 
-        public AllBillsViewModel(HaulageDbContext context, ILogger<AllBillsViewModel> logger)
+        public AllBillsViewModel(IBillService billService, IUserService userService, ILogger<AllBillsViewModel> logger)
         {
-            _context = context;
+            _billService = billService;
+            _userService = userService;
             _logger = logger;
+        }
 
-            int currentUserId = GetCurrentUserId();
+        public async Task LoadBillsAsync()
+        {
+            int currentUserId = _userService.GetCurrentUserId();
 
             try
             {
                 if (currentUserId == 0)
                 {
-                    AllBills = new ObservableCollection<BillViewModel>(); 
+                    _logger.LogWarning("No current user ID found in Preferences.");
+                    AllBills = new ObservableCollection<BillViewModel>();
                     return;
                 }
-
-                var bills = _context.bill
-                    .Include(b => b.Items)
-                    .Where(b => b.CustomerId == currentUserId)  
-                    .ToList();
-
+                var bills = await _billService.GetBillsForCurrentUserAsync(currentUserId);
                 AllBills = new ObservableCollection<BillViewModel>(
-                    bills.Select(b => new BillViewModel(_context, b))
+                    bills.Select(b => new BillViewModel(b)).ToList()
                 );
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error initializing AllBills.");
                 AllBills = new ObservableCollection<BillViewModel>();
             }
         }
 
-        protected virtual int GetCurrentUserId()
+        protected void OnPropertyChanged(string propertyName)
         {
-            return Preferences.Get("currentUserId", 0); 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

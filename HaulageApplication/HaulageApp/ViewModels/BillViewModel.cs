@@ -1,6 +1,5 @@
-using HaulageApp.Models;
-using HaulageApp.Data;
 using System.Collections.ObjectModel;
+using HaulageApp.Models;
 
 namespace HaulageApp.ViewModels
 {
@@ -11,19 +10,12 @@ namespace HaulageApp.ViewModels
         public int BillId => Bill.BillId;
         public decimal Amount => Bill.Amount;
         public string Status => Bill.Status;
-        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
+        public ObservableCollection<Item> Items { get; }
 
-        public BillViewModel(HaulageDbContext context, Bill bill)
+        public BillViewModel(Bill bill)
         {
             Bill = bill;
-
-            if (Bill.Items != null)
-            {
-                foreach (var item in Bill.Items)
-                {
-                    Items.Add(item);
-                }
-            }
+            Items = new ObservableCollection<Item>(bill.Items);
         }
     }
 }

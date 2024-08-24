@@ -1,17 +1,21 @@
 using HaulageApp.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace HaulageApp.Views;
 
 public partial class AllBillsPage : ContentPage
 {
+    private readonly AllBillsViewModel _viewModel;
     public AllBillsPage(AllBillsViewModel viewModel)
     {
-        BindingContext = viewModel;
         InitializeComponent();
+        BindingContext = viewModel;
+        _viewModel = viewModel; 
     }
 
-    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    protected override async void OnAppearing()
     {
-        billCollection.SelectedItem = null;
+        base.OnAppearing();
+        await _viewModel.LoadBillsAsync();
     }
 }
