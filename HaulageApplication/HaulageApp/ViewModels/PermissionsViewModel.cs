@@ -10,6 +10,7 @@ public partial class PermissionsViewModel : ObservableObject
     [ObservableProperty] private bool _manageCustomersIsVisible;
     // example (using notes)
     [ObservableProperty] private bool _notesIsVisible;
+    [ObservableProperty] private bool _billsIsVisible;
     
     private readonly HaulageDbContext _dbContext;
     private readonly IPreferencesWrapper _preferencesWrapper;
@@ -54,6 +55,7 @@ public partial class PermissionsViewModel : ObservableObject
                 // Customer (and anyone else)
                 NotesIsVisible = false;
                 ManageCustomersIsVisible = false;
+                BillsIsVisible = true;
                 break; 
             case 2:
                 // Driver

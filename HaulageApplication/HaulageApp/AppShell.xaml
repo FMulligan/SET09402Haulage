@@ -63,5 +63,13 @@
                 ContentTemplate="{DataTemplate views:SettingsPage}"
                 Route="settings" />
         </Tab>
+        
+        <Tab Title="Bills" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
+            <ShellContent
+                Title="Bills"
+                ContentTemplate="{DataTemplate views:AllBillsPage}"
+                IsVisible="{Binding BillsIsVisible}"
+                Route="bills" />
+        </Tab>
     </TabBar>
 </Shell>
