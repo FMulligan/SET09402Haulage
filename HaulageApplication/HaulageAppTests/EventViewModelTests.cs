@@ -14,6 +14,7 @@ public class EventViewModelTests
     private readonly EventViewModel _viewModel;
     private readonly Mock<DbSet<Event>> _mockEvents;
     private readonly Trip _trip;
+    private readonly Event _event;
 
     public EventViewModelTests()
     {
@@ -21,6 +22,7 @@ public class EventViewModelTests
         _mockEvents = new Mock<DbSet<Event>>();
         _viewModel = new EventViewModel(_mockContext.Object);
         _trip = new Trip { Id = 1, Driver = 2 }; 
+        _event = new Event { Id = 2, TripId = 1, EventType = "Delay", Timestamp = DateTime.Now};
         
         _mockContext.Setup(e => e.events).Returns(_mockEvents.Object);
 
@@ -28,8 +30,7 @@ public class EventViewModelTests
     [Fact]
     public void ShouldAssignEventWhenQureied()
     {
-        var events = new Event { Id = 2, TripId = 1, EventType = "Delay", Timestamp = DateTime.Now};
-        var query = new Dictionary<string, object> { { "trip", _trip }, { "event", events } };
+        var query = new Dictionary<string, object> { { "trip", _trip }, { "event", _event } };
         _viewModel.ApplyQueryAttributes(query);
         
         Assert.Equal("Delay", _viewModel.EventType);
@@ -50,11 +51,10 @@ public class EventViewModelTests
     [Fact]
     public Task SaveShouldUpdateEventIfExisting()
     {
-        var events = new Event { Id = 2, TripId = 1, EventType = "Delay", Timestamp = DateTime.Now};
-        _viewModel.ApplyQueryAttributes(new Dictionary<string, object> { { "event", events } });
+        _viewModel.ApplyQueryAttributes(new Dictionary<string, object> { { "event", _event } });
         _viewModel.EventType = "Emergency";
         
-        _mockContext.Setup(e => e.Entry(events)).Returns(new Mock<FakeEntityEntry<Event>>().Object);
+        _mockContext.Setup(e => e.Entry(_event)).Returns(new Mock<FakeEntityEntry<Event>>().Object);
         _viewModel.Save();
         
         _mockEvents.Verify(c => c.AsQueryable(), Times.Once);
@@ -64,8 +64,7 @@ public class EventViewModelTests
 
     [Fact] public Task DeleteShouldRemoveEvent() 
     { 
-        var events = new Event { Id = 2, TripId = 1, EventType = "Delay2", Timestamp = DateTime.Now};
-        _viewModel.ApplyQueryAttributes(new Dictionary<string, object> { { "event", events } });
+        _viewModel.ApplyQueryAttributes(new Dictionary<string, object> { { "event", _event } });
         
         _viewModel.Delete();
         
