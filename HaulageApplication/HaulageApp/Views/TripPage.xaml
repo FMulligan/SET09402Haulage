@@ -49,6 +49,10 @@
                                     Text="Manage expenses"
                                     FontSize="16"
                                     Command="{Binding GoToExpensesCommand}"/>
+                                <Button
+                                    Text="Manage events"
+                                    FontSize="16"
+                                    Command="{Binding GoToEventsCommand}"/>
                             </VerticalStackLayout>
                         </StackLayout>
                     </DataTemplate>
