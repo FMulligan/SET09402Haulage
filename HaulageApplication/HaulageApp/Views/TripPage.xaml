@@ -43,6 +43,7 @@
                                 <Button 
                                     Text="{Binding EditSaveButtonText}" 
                                     Command="{Binding ToggleEditCommand}"
+                                    IsVisible="{Binding IsEditButtonVisible}"
                                     FontSize="16"
                                 />
                                 <Button

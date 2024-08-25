@@ -78,7 +78,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AllVehiclesViewModel>();
         builder.Services.AddTransient<VehicleViewModel>();
         
-        builder.Services.AddSingleton<TripViewModel>();
+        builder.Services.AddTransient<TripViewModel>();
         builder.Services.AddTransient<TripPage>();
 
         builder.Services.AddTransient<AppShell>();
