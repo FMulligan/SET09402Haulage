@@ -1,4 +1,3 @@
-// SharedTestSetup.cs
 using HaulageApp.Models;
 using System.Collections.Generic;
 using HaulageApp.ViewModels;
