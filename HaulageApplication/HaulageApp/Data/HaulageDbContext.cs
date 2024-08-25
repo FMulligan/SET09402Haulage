@@ -11,7 +11,7 @@ namespace HaulageApp.Data
         { }
 
         public DbSet<Note> note { get; set; }
-        public DbSet<User> user { get; set; }
+        public virtual DbSet<User> user { get; set; }
         public DbSet<Trip> trip { get; set; }
         public virtual DbSet<Vehicle> vehicle { get; set; }
         public virtual DbSet<Expense> expense { get; set; }

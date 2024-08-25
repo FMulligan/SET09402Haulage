@@ -12,10 +12,4 @@ public partial class ManageCustomersPage : ContentPage
         BindingContext = _viewModel;
         InitializeComponent();
     }
-    
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        _viewModel.ClearCommand.Execute(null);
-    }
 }
