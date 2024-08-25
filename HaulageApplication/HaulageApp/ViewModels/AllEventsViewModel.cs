@@ -47,8 +47,7 @@ public partial class AllEventsViewModel: ObservableObject, IQueryAttributable
         //fast handle if no trip
         if (tripId == 0)
             return;
-
-        Events.Clear();
+        
         var events = await _context.events
             .AsQueryable()
             .Where(e => e.TripId == tripId)
