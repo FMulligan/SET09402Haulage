@@ -1,4 +1,4 @@
-namespace HaulageApp.Common;
+namespace HaulageApp.Services;
 
 public interface IPreferencesWrapper
 {

@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using HaulageApp.Common;
 using HaulageApp.Data;
 using HaulageApp.Models;
+using HaulageApp.Services;
 
 namespace HaulageApp.ViewModels;
 

@@ -6,7 +6,6 @@ using HaulageApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Maui;
-using HaulageApp.Common;
 using HaulageApp.Services;
 
 namespace HaulageApp;
