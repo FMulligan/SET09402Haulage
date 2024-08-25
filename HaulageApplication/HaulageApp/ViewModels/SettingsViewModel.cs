@@ -26,11 +26,11 @@ public partial class SettingsViewModel : ObservableObject
         set
         {
             _email = value;
-            OnPropertyChanged(Email);
+            OnPropertyChanged();
         }
     }
 
-    private void GetEmail()
+    public void GetEmail()
     {
         Email = _preferencesWrapper.Get<string>("hasAuth", "Error retrieving email.");
     }
