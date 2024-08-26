@@ -114,7 +114,13 @@
       </MauiXaml>
       <MauiXaml Update="Views\EventPage.xaml">
         <SubType>Designer</SubType>
-      </MauiXaml>   
+      </MauiXaml>
+      <MauiXaml Update="Views\AllItemsPage.xaml">
+            <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Views\ItemPage.xaml">
+            <SubType>Designer</SubType>
+      </MauiXaml> 
     </ItemGroup>
 
     <ItemGroup>
@@ -181,6 +187,14 @@
       <Compile Update="Views\EventPage.xaml.cs">
         <DependentUpon>EventPage.xaml</DependentUpon>
         <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AllItemsPage.xaml.cs">
+            <DependentUpon>AllItemsPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ItemPage.xaml.cs">
+            <DependentUpon>ItemPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
 

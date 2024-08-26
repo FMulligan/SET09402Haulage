@@ -57,6 +57,19 @@ public class MockDb
             new Trip { Id = 1, StartTime = DateTime.Now.AddHours(-2), Status = "ongoing" },
             new Trip { Id = 2, StartTime = DateTime.Now.AddHours(-4), Status = "completed" }
         );
+        
+        context.bill.AddRange(
+            new Bill { BillId = 1, CustomerId = 1, Amount = 100.20m, Status = "pending", Items = new List<Item>
+            {
+                new Item { ItemId = 1, PickupLocation = "Loc A", DeliveryLocation = "Loc B", Status = "delivered" },
+                new Item { ItemId = 2, PickupLocation = "Loc C", DeliveryLocation = "Loc D", Status = "pending" }
+            }},
+            new Bill { BillId = 2, CustomerId = 4, Amount = 200.00m, Status = "pending", Items = new List<Item>
+            {
+                new Item { ItemId = 3, PickupLocation = "Loc A", DeliveryLocation = "Loc B", Status = "delivered" },
+                new Item { ItemId = 4, PickupLocation = "Loc C", DeliveryLocation = "Loc D", Status = "pending" }
+            } }
+        );
 
         context.SaveChanges();
     }

@@ -18,6 +18,7 @@ namespace HaulageApp.Data
         public DbSet<Role> role { get; set; }
         public DbSet<Bill> bill { get; set; }  
         public virtual DbSet<Event> events { get; set; }
-        public DbSet<Item> item { get; set; }
+        
+        public virtual DbSet<Item> item { get; set; }
     }
 }

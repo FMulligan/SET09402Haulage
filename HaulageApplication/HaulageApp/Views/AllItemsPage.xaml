@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="HaulageApp.Views.AllItemsPage"
+             Title="Items">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" IconImageSource="{FontImage Glyph='+', Color=Black, Size=22}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <CollectionView x:Name = "itemCollection"
+                        ItemsSource="{Binding AllItems}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedItem}"
+                        SelectionChangedCommand="{Binding SelectItemCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem}">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" BorderColor="LightGray" CornerRadius="5" HasShadow="True">
+                        <VerticalStackLayout>
+                            <Label Text="Item Id:" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="{Binding ItemId}" FontSize="Medium" TextColor="Black"/>
+                            <Label Text="Pickup Location:" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="{Binding PickupLocation}" FontSize="Medium" TextColor="Black"/>
+                            <Label Text="Delivery Location:" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="{Binding DeliveryLocation}" FontSize="Medium" TextColor="Black"/>
+                            <Label Text="Status:" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="{Binding Status}" FontSize="Medium" TextColor="Black"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>    
+        </CollectionView>
+    </ScrollView>
+</ContentPage>

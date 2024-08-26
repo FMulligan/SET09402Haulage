@@ -91,6 +91,12 @@ public static class MauiProgram
 
         builder.Services.AddTransient<AllBillsViewModel>();
         builder.Services.AddTransient<AllBillsPage>();
+        
+        builder.Services.AddTransient<AllItemsViewModel>();
+        builder.Services.AddTransient<ItemViewModel>();
+
+        builder.Services.AddTransient<AllItemsPage>();
+        builder.Services.AddTransient<ItemPage>();
 
  
 #if DEBUG
