@@ -59,19 +59,27 @@
                 Route="manageCustomers"/>
         </Tab>
         
-        <Tab Title="Settings" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
-            <ShellContent
-                Title="Settings"
-                ContentTemplate="{DataTemplate views:SettingsPage}"
-                Route="settings" />
-        </Tab>
-        
         <Tab Title="Bills" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
             <ShellContent
                 Title="Bills"
                 ContentTemplate="{DataTemplate views:AllBillsPage}"
                 IsVisible="{Binding BillsIsVisible}"
                 Route="bills" />
+        </Tab>
+        <Tab Title="Items" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
+            <ShellContent
+                Title="Items"
+                ContentTemplate="{DataTemplate views:AllItemsPage}"
+                IsVisible="{Binding BillsIsVisible}" 
+                Route="items" />
+            <!-- Can reuse BillsIsVisible as both Bills and items have same permissions -->
+        </Tab>
+
+        <Tab Title="Settings" Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate views:SettingsPage}"
+                Route="settings" />
         </Tab>
     </TabBar>
 </Shell>

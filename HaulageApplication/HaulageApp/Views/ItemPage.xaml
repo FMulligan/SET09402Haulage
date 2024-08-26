@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HaulageApp.Views.ItemPage"
+             Title="Item">
+    <StackLayout Spacing = "10" Padding="10">
+        <Entry x:Name="PickupLocationEditor"
+               Placeholder="Enter the Pickup Location"
+               Text="{Binding PickupLocation, Mode=TwoWay}"/>
+        <Entry x:Name="DeliveryLocationEditor"
+               Placeholder="Enter the Delivery Location"
+               Text="{Binding DeliveryLocation, Mode=TwoWay}"/>
+        <CollectionView x:Name="StatusSelector"
+                        SelectionMode="Single"
+                        HeightRequest="75"
+                        SelectedItem="{Binding Status}">
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>pending</x:String> 
+                    <x:String>picked up</x:String>
+                    <x:String>delivered</x:String>
+                </x:Array>
+            </CollectionView.ItemsSource>
+        </CollectionView>
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="4">
+            <Button Grid.Column="0"
+                    Text="Save"
+                    Command="{Binding SaveCommand}"/>
+
+            <Button Grid.Column="1"
+                    Text="Delete"
+                    Command="{Binding DeleteCommand}"/>
+        </Grid>
+    </StackLayout>
+
+</ContentPage>

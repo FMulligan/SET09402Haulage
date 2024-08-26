@@ -33,12 +33,16 @@
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <VerticalStackLayout>
-                                                <Label Text="Pickup Location:" FontAttributes="Bold"/>
-                                                <Label Text="{Binding PickupLocation}" TextColor="Gray"/>
-                                                <Label Text="Delivery Location:" FontAttributes="Bold"/>
-                                                <Label Text="{Binding DeliveryLocation}" TextColor="Gray"/>
-                                                <Label Text="Status:" FontAttributes="Bold"/>
-                                                <Label Text="{Binding Status}" TextColor="Gray"/>
+                                                <Frame Padding="10" Margin="5" BorderColor="LightGray" CornerRadius="5">
+                                                    <VerticalStackLayout>
+                                                        <Label Text="Pickup Location:" FontAttributes="Bold"/>
+                                                        <Label Text="{Binding PickupLocation}" TextColor="Gray"/>
+                                                        <Label Text="Delivery Location:" FontAttributes="Bold"/>
+                                                        <Label Text="{Binding DeliveryLocation}" TextColor="Gray"/>
+                                                        <Label Text="Status:" FontAttributes="Bold"/>
+                                                        <Label Text="{Binding Status}" TextColor="Gray"/>
+                                                    </VerticalStackLayout>
+                                                </Frame>
                                             </VerticalStackLayout>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
