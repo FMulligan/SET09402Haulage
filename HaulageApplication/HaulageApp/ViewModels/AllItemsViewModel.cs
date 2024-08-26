@@ -100,7 +100,7 @@ public partial class AllItemsViewModel: ObservableObject
         var tripId = _context.trip
             .AsQueryable()
             .OrderByDescending(i => i.Id)
-            .First().Id;
+            .FirstOrDefault()!.Id;
         return tripId == null ? 0 : tripId;
     }
 

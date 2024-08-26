@@ -44,7 +44,7 @@ public class ItemTests
     }
 
     [Fact]
-    public void ShouldAssignItemWhenQureied()
+    public void ApplyQueryAttributes_ShouldAssignItemProperties()
     {
         var query = new Dictionary<string, object> { { "billId", _bill.BillId }, { "item", _item } };
         _viewModel.ApplyQueryAttributes(query);
