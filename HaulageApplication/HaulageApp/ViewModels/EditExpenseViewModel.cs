@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HaulageApp.Common;
 using HaulageApp.Data;
 using HaulageApp.Models;
+using HaulageApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp.ViewModels;

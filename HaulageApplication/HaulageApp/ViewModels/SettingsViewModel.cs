@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using HaulageApp.Common;
 using HaulageApp.Data;
+using HaulageApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HaulageApp.ViewModels;

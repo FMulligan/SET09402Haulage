@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HaulageApp.Views.EditCustomerPage"
+             Title="Manage Account">
+    
+    <VerticalStackLayout Spacing="10" Margin="10">
+        <VerticalStackLayout Padding="10">
+            <Label Text="Account email"
+                   FontAttributes="Bold"
+                   FontSize="10"/>
+        
+            <Label Text="{Binding Email}"
+                   FontAttributes="Bold"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout Padding="10">
+            <Label Text="Account status"
+                   FontAttributes="Bold"
+                   FontSize="10"/>
+        
+            <Picker Title="Select account status" 
+                    SelectedIndex="{Binding StatusIndex}"
+                    SelectedIndexChanged="Picker_OnSelectedIndexChanged">
+                <Picker.Items>
+                    <x:String>Active</x:String>
+                    <x:String>Inactive</x:String>
+                </Picker.Items>
+            </Picker>
+        </VerticalStackLayout>
+
+            <Button Padding="10" Text="Save"
+                    Command="{Binding SaveCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -6,7 +6,6 @@ using HaulageApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Maui;
-using HaulageApp.Common;
 using HaulageApp.Services;
 
 namespace HaulageApp;
@@ -54,6 +53,9 @@ public static class MauiProgram
         
         builder.Services.AddTransient<ManageCustomersViewModel>();
         builder.Services.AddTransient<ManageCustomersPage>();
+                
+        builder.Services.AddTransient<EditCustomerViewModel>();
+        builder.Services.AddTransient<EditCustomerPage>();
         
         builder.Services.AddTransient<ExpensesViewModel>();
         builder.Services.AddTransient<ExpensesPage>();

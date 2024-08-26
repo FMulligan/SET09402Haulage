@@ -1,7 +1,7 @@
-using HaulageApp.Common;
 using Moq;
 using HaulageApp.Data;
 using HaulageApp.Models;
+using HaulageApp.Services;
 using HaulageApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

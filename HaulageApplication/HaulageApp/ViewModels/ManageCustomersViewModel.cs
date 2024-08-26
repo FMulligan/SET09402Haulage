@@ -6,10 +6,9 @@ using HaulageApp.Models;
 
 namespace HaulageApp.ViewModels;
 
-public partial class ManageCustomersViewModel : ObservableObject
+public partial class ManageCustomersViewModel : ObservableObject, IQueryAttributable
 {
     private readonly HaulageDbContext _context;
-    private Role? _role;
     private List<User> _allCustomers;
     public ObservableCollection<User> Customers { get; } = [];
     
@@ -17,6 +16,15 @@ public partial class ManageCustomersViewModel : ObservableObject
     {
         _context = dbContext;
         LoadAllCustomers();
+    }
+    
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.ContainsKey("reload"))
+        {
+            _allCustomers.Clear();
+            LoadAllCustomers();
+        }
     }
     
     private string _customerIdOrEmail;
@@ -33,6 +41,7 @@ public partial class ManageCustomersViewModel : ObservableObject
     private void LoadAllCustomers()
     {
         _allCustomers = GetAllCustomers();
+        Customers.Clear();
         foreach (var customer in _allCustomers)
         {
             Customers.Add(customer);
@@ -109,5 +118,11 @@ public partial class ManageCustomersViewModel : ObservableObject
         {
             Customers.Add(customer);
         }
+    }
+    
+    [RelayCommand]
+    private async Task SelectCustomer(object item)
+    {
+        await Shell.Current.GoToAsync(nameof(Views.EditCustomerPage), new Dictionary<string, object>{{ "customer", item }});
     }
 }
