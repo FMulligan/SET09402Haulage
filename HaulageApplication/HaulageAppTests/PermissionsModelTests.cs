@@ -24,7 +24,8 @@ public class PermissionsModelTests
         fakeStorage.Set<string>("hasAuth", "customer");
         _viewModel.UpdateTabsForCurrentUser();
         Assert.False(_viewModel.ManageCustomersIsVisible);
-        Assert.False(_viewModel.NotesIsVisible);
+        Assert.True(_viewModel.BillsIsVisible);
+        Assert.False(_viewModel.TripsIsVisible);
     }
 
     [Fact]
@@ -33,7 +34,8 @@ public class PermissionsModelTests
         fakeStorage.Set<string>("hasAuth", "driver");
         _viewModel.UpdateTabsForCurrentUser();
         Assert.False(_viewModel.ManageCustomersIsVisible);
-        Assert.True(_viewModel.NotesIsVisible);
+        Assert.False(_viewModel.BillsIsVisible);
+        Assert.True(_viewModel.TripsIsVisible);
     }
 
     [Fact]
@@ -42,6 +44,7 @@ public class PermissionsModelTests
         fakeStorage.Set<string>("hasAuth", "admin");
         _viewModel.UpdateTabsForCurrentUser();
         Assert.True(_viewModel.ManageCustomersIsVisible);
-        Assert.False(_viewModel.NotesIsVisible);
+        Assert.False(_viewModel.BillsIsVisible);
+        Assert.True(_viewModel.TripsIsVisible);
     }
 }

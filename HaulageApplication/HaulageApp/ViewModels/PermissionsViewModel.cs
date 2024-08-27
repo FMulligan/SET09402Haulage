@@ -8,8 +8,6 @@ namespace HaulageApp.ViewModels;
 public partial class PermissionsViewModel : ObservableObject
 {
     [ObservableProperty] private bool _manageCustomersIsVisible;
-    // example (using notes)
-    [ObservableProperty] private bool _notesIsVisible;
     [ObservableProperty] private bool _billsIsVisible;
     [ObservableProperty] private bool _tripsIsVisible;
 
@@ -54,21 +52,18 @@ public partial class PermissionsViewModel : ObservableObject
         {
             default:
                 // Customer (and anyone else)
-                NotesIsVisible = false;
                 ManageCustomersIsVisible = false;
                 BillsIsVisible = true;
                 TripsIsVisible = false;
                 break; 
             case 2:
                 // Driver
-                NotesIsVisible = true;
                 ManageCustomersIsVisible = false;
                 BillsIsVisible = false;
                 TripsIsVisible = true;
                 break;
             case 3:
                 // Admin
-                NotesIsVisible = false;
                 ManageCustomersIsVisible = true;
                 BillsIsVisible = false;
                 TripsIsVisible = true;

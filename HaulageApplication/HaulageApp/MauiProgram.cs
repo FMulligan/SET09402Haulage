@@ -44,9 +44,6 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<IPreferencesWrapper>(implementationFactory => new PreferencesWrapper());
         builder.Services.AddSingleton<INavigationService>(implementationFactory => new NavigationService());
-                    
-        builder.Services.AddSingleton<AllNotesViewModel>();
-        builder.Services.AddTransient<NoteViewModel>();
         
         builder.Services.AddSingleton<TripViewModel>();
         builder.Services.AddTransient<TripPage>();
@@ -71,9 +68,6 @@ public static class MauiProgram
         
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<SettingsPage>();
-        
-        builder.Services.AddSingleton<AllNotesPage>();
-        builder.Services.AddTransient<NotePage>();
         
         builder.Services.AddSingleton<AllVehiclesPage>();
         builder.Services.AddTransient<VehiclePage>();
