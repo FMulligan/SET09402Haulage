@@ -10,7 +10,6 @@ namespace HaulageApp.Data
         public HaulageDbContext(DbContextOptions options) : base(options)
         { }
 
-        public DbSet<Note> note { get; set; }
         public virtual DbSet<User> user { get; set; }
         public DbSet<Trip> trip { get; set; }
         public virtual DbSet<Vehicle> vehicle { get; set; }
@@ -18,7 +17,6 @@ namespace HaulageApp.Data
         public DbSet<Role> role { get; set; }
         public DbSet<Bill> bill { get; set; }  
         public virtual DbSet<Event> events { get; set; }
-        
         public virtual DbSet<Item> item { get; set; }
     }
 }

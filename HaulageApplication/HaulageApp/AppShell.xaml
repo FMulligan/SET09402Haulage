@@ -18,23 +18,6 @@
         Route="login" />
 
     <TabBar>
-        <Tab Title="Notes"
-             Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}">
-            <ShellContent
-                Title="Home"
-                ContentTemplate="{DataTemplate views:AllNotesPage}"
-                IsVisible="{Binding NotesIsVisible}"
-                Route="notes" />
-        </Tab>
-
-        <Tab Title="About"
-             Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}">
-            <ShellContent
-                Title="About"
-                ContentTemplate="{DataTemplate views:AboutPage}"
-                Route="about" />
-        </Tab>
-        
         <Tab Title="Vehicles" Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}">
             <ShellContent
                 Title="Vehicle"

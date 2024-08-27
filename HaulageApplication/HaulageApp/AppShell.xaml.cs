@@ -10,10 +10,8 @@ public partial class AppShell : Shell
         BindingContext = viewmodel;
         InitializeComponent();
 
-        Routing.RegisterRoute("notes", typeof(AllNotesPage));
         Routing.RegisterRoute("login", typeof(LoginPage));
         Routing.RegisterRoute("vehicles", typeof(AllVehiclesPage));
-        Routing.RegisterRoute(nameof(NotePage), typeof(NotePage));
         Routing.RegisterRoute("expenses", typeof(ExpensesPage));
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("events", typeof(AllEventsPage));

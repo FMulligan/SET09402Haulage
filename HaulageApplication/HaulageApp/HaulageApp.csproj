@@ -70,15 +70,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiXaml Update="Views\NotePage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Views\AboutPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Views\AllNotesPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
       <MauiXaml Update="Views\LoginPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
@@ -124,18 +115,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\NotePage.xaml.cs">
-        <DependentUpon>NotePage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\AboutPage.xaml.cs">
-        <DependentUpon>AboutPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\AllNotesPage.xaml.cs">
-        <DependentUpon>AllNotesPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\LoginPage.xaml.cs">
         <DependentUpon>LoginPage.xaml</DependentUpon>
         <SubType>Code</SubType>
