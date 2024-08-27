@@ -101,6 +101,12 @@ public partial class VehicleViewModel : ObservableObject, IQueryAttributable, IN
     [RelayCommand]
     private async Task Delete()
     {
+        if (_vehicle.Id == 0)
+        {
+            await Shell.Current.DisplayAlert("Error", "Cannot delete a new vehicle", "Confirm");
+            return;
+        }
+
         _context.vehicle.Remove(_vehicle);
         _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?deleted={_vehicle.Id}");

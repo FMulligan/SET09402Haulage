@@ -22,6 +22,7 @@
             <ShellContent
                 Title="Vehicle"
                 ContentTemplate="{DataTemplate views:AllVehiclesPage}"
+                IsVisible="{Binding VehiclesIsVisible}"
                 Route="vehicles" />
         </Tab>
         

@@ -10,6 +10,7 @@ public partial class PermissionsViewModel : ObservableObject
     [ObservableProperty] private bool _manageCustomersIsVisible;
     [ObservableProperty] private bool _billsIsVisible;
     [ObservableProperty] private bool _tripsIsVisible;
+    [ObservableProperty] private bool _vehiclesIsVisible;
 
     private readonly HaulageDbContext _dbContext;
     private readonly IPreferencesWrapper _preferencesWrapper;
@@ -55,18 +56,21 @@ public partial class PermissionsViewModel : ObservableObject
                 ManageCustomersIsVisible = false;
                 BillsIsVisible = true;
                 TripsIsVisible = false;
+                VehiclesIsVisible = false;
                 break; 
             case 2:
                 // Driver
                 ManageCustomersIsVisible = false;
                 BillsIsVisible = false;
                 TripsIsVisible = true;
+                VehiclesIsVisible = false;
                 break;
             case 3:
                 // Admin
                 ManageCustomersIsVisible = true;
                 BillsIsVisible = false;
                 TripsIsVisible = true;
+                VehiclesIsVisible = true;
                 break;
         }
     }
